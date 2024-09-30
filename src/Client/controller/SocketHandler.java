@@ -5,6 +5,7 @@
  */
 package client.controller;
 
+import Client.view.scene.RankingApp;
 import client.RunClient;
 import client.model.ChatItem;
 import client.model.PlayerInGame;
@@ -233,6 +234,7 @@ public class SocketHandler {
         } else if (status.equals("success")) {
             // lưu user login
             this.loginUser = splitted[2];
+
 
             // chuyển scene
             RunClient.closeScene(RunClient.SceneName.LOGIN);
