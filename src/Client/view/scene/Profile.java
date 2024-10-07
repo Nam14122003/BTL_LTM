@@ -80,6 +80,7 @@ public class Profile extends javax.swing.JFrame {
 
     public void loadProfileData(String username) {
         setLoading(true);
+        System.out.println("Name : " + username);
         RunClient.socketHandler.getProfile(username);
     }
 

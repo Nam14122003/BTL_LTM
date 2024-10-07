@@ -6,22 +6,14 @@
 package client.view.scene;
 
 import Client.view.scene.RankingApp;
-<<<<<<< HEAD
-=======
-import Server.DB.Layers.DTO.GameMatchTable;
-import Server.DB.Layers.DTO.MatchListModel;
->>>>>>> main
 import client.RunClient;
 import client.view.helper.LookAndFeel;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.Callable;
-import javax.swing.*;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import shared.helper.CountDownTimer;
-import server.db.layers.DAL.GameMatchDAL;
+
 /**
  *
  * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
@@ -426,66 +418,42 @@ public class MainMenu extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-//        tpRoomAndUser.addTab("Lịch sử", jPanel5);
+        tpRoomAndUser.addTab("Danh sách phòng", jPanel5);
 
-//        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-//            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-//            public int getSize() { return strings.length; }
-//            public String getElementAt(int i) { return strings[i]; }
-//        });
-        // Truy vấn dữ liệu từ cơ sở dữ liệu
-        // Tạo một đối tượng GameMatchDAL
-//        server.db.layers.DAL.GameMatchDAL gameMatchDAL = new server.db.layers.DAL.GameMatchDAL();
-//
-//        // Sau đó gọi phương thức readDB() thông qua đối tượng này
-//        List<server.db.layers.DTO.GameMatch> matchList = gameMatchDAL.readDB();
-
-        // Lấy JList từ jScrollPane
-       // JList<String> jList1 = (JList<String>) jScrollPane2.getViewport().getView();
-
-        // Cập nhật model cho JList
-        //jList1.setModel(new MatchListModel(matchList));
-
-        // Đặt lại viewport cho jScrollPane
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
         jScrollPane2.setViewportView(jList1);
-
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_contact_24px.png"))); // NOI18N
         jButton1.setText("Xem thông tin");
 
-    //    javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        // Thiết lập Layout cho jPanel3
-//        jPanel3.setLayout(jPanel3Layout);
-//        jPanel3Layout.setHorizontalGroup(
-//                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//                        .addGroup(jPanel3Layout.createSequentialGroup()
-//                                .addContainerGap()
-//                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE) // Chiều rộng tối đa cho jScrollPane2
-//                                .addContainerGap())
-//                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-//                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-//                                .addComponent(jButton1) // Đặt jButton1 ở góc phải dưới
-//                                .addContainerGap())
-//        );
-//
-//        jPanel3Layout.setVerticalGroup(
-//                jPanel3Layout.createSequentialGroup()
-//                        .addContainerGap()
-//                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE) // Chiều cao cố định cho jScrollPane2
-//                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-//                        .addComponent(jButton1) // jButton1 nằm bên dưới
-//                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-//        );
-        //JPanel jPanel3 = new JPanel(); // Tạo hoặc lấy jPanel3 hiện có
-        GameMatchDAL gm = new server.db.layers.DAL.GameMatchDAL();
-        List<server.db.layers.DTO.GameMatch> matchList = gm.readDB(); // Lấy danh sách trận đấu từ database
-        GameMatchTable gameMatchTable = new GameMatchTable();
-        gameMatchTable.addGameMatchesToPanel(jPanel3, matchList); // Thêm bảng vào jPanel3
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 338, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
-
-
-//
-        tpRoomAndUser.addTab("Lịch sử", jPanel3);
+        tpRoomAndUser.addTab("Người chơi", jPanel3);
 
         lbFoundMatch.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lbFoundMatch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -598,7 +566,6 @@ public class MainMenu extends javax.swing.JFrame {
     private void btnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileActionPerformed
         RunClient.openScene(RunClient.SceneName.PROFILE);
         RunClient.profileScene.loadProfileData(RunClient.socketHandler.getLoginUser());
-        System.out.println("Loaded profile data");
     }//GEN-LAST:event_btnProfileActionPerformed
 
     private void btnFindMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindMatchActionPerformed

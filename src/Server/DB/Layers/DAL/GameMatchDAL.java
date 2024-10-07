@@ -27,7 +27,7 @@ public class GameMatchDAL {
 
     }
 
-    public ArrayList readDB() {
+    public  ArrayList readDB() {
         ArrayList<GameMatch> result = new ArrayList<>();
         connector = new MysqlConnector();
 

@@ -6,11 +6,8 @@
 package client.view.scene;
 
 import Client.view.scene.RankingApp;
-<<<<<<< HEAD
-=======
 import Server.DB.Layers.DTO.GameMatchTable;
 import Server.DB.Layers.DTO.MatchListModel;
->>>>>>> main
 import client.RunClient;
 import client.view.helper.LookAndFeel;
 
