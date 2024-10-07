@@ -18,7 +18,7 @@ import server.game.GameLogic;
 public class Caro extends GameLogic {
 
     public static final int ROW = 16, COL = 16;
-    public static final int TURN_TIME_LIMIT = 30, MATCH_TIME_LIMIT = 10 * 60;
+    public static final int TURN_TIME_LIMIT = 30, MATCH_TIME_LIMIT = 1 * 60;
 
     ArrayList<History> history;
     History preMove;

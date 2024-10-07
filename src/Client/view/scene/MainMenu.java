@@ -5,14 +5,20 @@
  */
 package client.view.scene;
 
+import Client.view.scene.RankingApp;
+import Server.DB.Layers.DTO.GameMatchTable;
+import Server.DB.Layers.DTO.MatchListModel;
 import client.RunClient;
 import client.view.helper.LookAndFeel;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.Callable;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import shared.helper.CountDownTimer;
-
+import server.db.layers.DAL.GameMatchDAL;
 /**
  *
  * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
@@ -170,6 +176,7 @@ public class MainMenu extends javax.swing.JFrame {
         btnCreateRoom = new javax.swing.JButton();
         btnFindMatch = new javax.swing.JButton();
         btnJoin = new javax.swing.JButton();
+        btnRanking = new javax.swing.JButton();
         btnWatch = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         btnLogout = new javax.swing.JButton();
@@ -222,8 +229,8 @@ public class MainMenu extends javax.swing.JFrame {
 
         plBtns.setBorder(javax.swing.BorderFactory.createTitledBorder("Chức năng"));
 
-        btnCreateRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_add_24px.png"))); // NOI18N
-        btnCreateRoom.setText("Tạo phòng");
+//        btnCreateRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_add_24px.png"))); // NOI18N
+//        btnCreateRoom.setText("Tạo phòng");
 
         btnFindMatch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_circled_play_24px.png"))); // NOI18N
         btnFindMatch.setText("Tìm trận");
@@ -233,16 +240,28 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        btnJoin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_open_door_24px.png"))); // NOI18N
-        btnJoin.setText("Vào phòng");
-
-        btnWatch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_vision_24px.png"))); // NOI18N
-        btnWatch.setText("Vào xem");
-        btnWatch.addActionListener(new java.awt.event.ActionListener() {
+//        btnJoin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_open_door_24px.png"))); // NOI18N
+//        btnJoin.setText("Vào phòng");
+        btnProfile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_contact_24px.png"))); // NOI18N
+        btnProfile.setText("Hồ sơ");
+        btnProfile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnWatchActionPerformed(evt);
+                btnProfileActionPerformed(evt);
             }
         });
+        btnRanking.setText("Bảng xếp hạng");
+        btnRanking.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icon_ranking.png")));
+        btnRanking.addActionListener(e -> {
+            // Tạo cửa sổ bảng xếp hạng
+            RankingApp rankingApp = new RankingApp(RunClient.socketHandler.getLoginUser());
+        });
+//        btnWatch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_vision_24px.png"))); // NOI18N
+//        btnWatch.setText("Vào xem");
+//        btnWatch.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                btnWatchActionPerformed(evt);
+//            }
+//        });
 
         javax.swing.GroupLayout plBtnsLayout = new javax.swing.GroupLayout(plBtns);
         plBtns.setLayout(plBtnsLayout);
@@ -252,23 +271,32 @@ public class MainMenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(btnFindMatch)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnWatch)
+//                .addComponent(btnWatch)
+//                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+//                .addComponent(btnJoin)
+//                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnProfile)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnRanking)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnJoin)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCreateRoom)
-                .addContainerGap())
+                //.addComponent(btnCreateRoom)
+                 .addContainerGap()
+            )
         );
         plBtnsLayout.setVerticalGroup(
             plBtnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(plBtnsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(plBtnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCreateRoom)
+                    //.addComponent(btnCreateRoom)
                     .addComponent(btnFindMatch)
-                    .addComponent(btnJoin)
-                    .addComponent(btnWatch))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                  //  .addComponent(btnJoin)
+                     .addComponent(btnProfile)
+                    .addComponent(btnRanking)
+                 //   .addComponent(btnWatch)
+                )
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                )
         );
 
         btnLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_logout_rounded_left_24px.png"))); // NOI18N
@@ -279,13 +307,7 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        btnProfile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_contact_24px.png"))); // NOI18N
-        btnProfile.setText("Hồ sơ");
-        btnProfile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProfileActionPerformed(evt);
-            }
-        });
+
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -295,8 +317,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(btnLogout)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnProfile)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            )
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,7 +325,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLogout)
-                    .addComponent(btnProfile))
+                )
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -402,42 +423,66 @@ public class MainMenu extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        tpRoomAndUser.addTab("Danh sách phòng", jPanel5);
+//        tpRoomAndUser.addTab("Lịch sử", jPanel5);
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+//        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+//            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+//            public int getSize() { return strings.length; }
+//            public String getElementAt(int i) { return strings[i]; }
+//        });
+        // Truy vấn dữ liệu từ cơ sở dữ liệu
+        // Tạo một đối tượng GameMatchDAL
+//        server.db.layers.DAL.GameMatchDAL gameMatchDAL = new server.db.layers.DAL.GameMatchDAL();
+//
+//        // Sau đó gọi phương thức readDB() thông qua đối tượng này
+//        List<server.db.layers.DTO.GameMatch> matchList = gameMatchDAL.readDB();
+
+        // Lấy JList từ jScrollPane
+       // JList<String> jList1 = (JList<String>) jScrollPane2.getViewport().getView();
+
+        // Cập nhật model cho JList
+        //jList1.setModel(new MatchListModel(matchList));
+
+        // Đặt lại viewport cho jScrollPane
         jScrollPane2.setViewportView(jList1);
+
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_contact_24px.png"))); // NOI18N
         jButton1.setText("Xem thông tin");
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 338, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+    //    javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        // Thiết lập Layout cho jPanel3
+//        jPanel3.setLayout(jPanel3Layout);
+//        jPanel3Layout.setHorizontalGroup(
+//                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                        .addGroup(jPanel3Layout.createSequentialGroup()
+//                                .addContainerGap()
+//                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE) // Chiều rộng tối đa cho jScrollPane2
+//                                .addContainerGap())
+//                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+//                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                                .addComponent(jButton1) // Đặt jButton1 ở góc phải dưới
+//                                .addContainerGap())
+//        );
+//
+//        jPanel3Layout.setVerticalGroup(
+//                jPanel3Layout.createSequentialGroup()
+//                        .addContainerGap()
+//                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE) // Chiều cao cố định cho jScrollPane2
+//                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+//                        .addComponent(jButton1) // jButton1 nằm bên dưới
+//                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//        );
+        //JPanel jPanel3 = new JPanel(); // Tạo hoặc lấy jPanel3 hiện có
+        GameMatchDAL gm = new server.db.layers.DAL.GameMatchDAL();
+        List<server.db.layers.DTO.GameMatch> matchList = gm.readDB(); // Lấy danh sách trận đấu từ database
+        GameMatchTable gameMatchTable = new GameMatchTable();
+        gameMatchTable.addGameMatchesToPanel(jPanel3, matchList); // Thêm bảng vào jPanel3
 
-        tpRoomAndUser.addTab("Người chơi", jPanel3);
+
+
+//
+        tpRoomAndUser.addTab("Lịch sử", jPanel3);
 
         lbFoundMatch.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lbFoundMatch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -550,6 +595,7 @@ public class MainMenu extends javax.swing.JFrame {
     private void btnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileActionPerformed
         RunClient.openScene(RunClient.SceneName.PROFILE);
         RunClient.profileScene.loadProfileData(RunClient.socketHandler.getLoginUser());
+        System.out.println("Loaded profile data");
     }//GEN-LAST:event_btnProfileActionPerformed
 
     private void btnFindMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindMatchActionPerformed
@@ -630,6 +676,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnCreateRoom;
     private javax.swing.JButton btnDeclinePairMatch;
     private javax.swing.JButton btnFindMatch;
+    private javax.swing.JButton btnRanking;
     private javax.swing.JButton btnJoin;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnProfile;

@@ -5,6 +5,7 @@
  */
 package client.controller;
 
+import Client.view.scene.RankingApp;
 import client.RunClient;
 import client.model.ChatItem;
 import client.model.PlayerInGame;
@@ -233,6 +234,7 @@ public class SocketHandler {
         } else if (status.equals("success")) {
             // lưu user login
             this.loginUser = splitted[2];
+
 
             // chuyển scene
             RunClient.closeScene(RunClient.SceneName.LOGIN);
@@ -517,7 +519,7 @@ public class SocketHandler {
                     splitted[5], // avatar
                     splitted[6], // gender
                     Integer.parseInt(splitted[7]), // year of birth
-                    Integer.parseInt(splitted[8]), // score
+                    Double.parseDouble(splitted[8]), // score
                     Integer.parseInt(splitted[9]), // match count
                     Integer.parseInt(splitted[10]), // win count
                     Integer.parseInt(splitted[11]), // tie count
@@ -723,9 +725,10 @@ public class SocketHandler {
     public void getProfile(String username) {
         // prepare data
         String data = StreamData.Type.GET_PROFILE.name() + ";" + username;
-
+        System.out.println("Prepar send data: "+ data);
         // send data
         sendData(data);
+        System.out.println("Sent data");
     }
 
     public void editProfile(String name, String avatar, String yearOfBirth, String gender) {
@@ -764,7 +767,9 @@ public class SocketHandler {
         try {
 
             String encrypted = aes.encrypt(data);
+            System.out.println("Encrypted data: " + encrypted);
             dos.writeUTF(encrypted);
+
 
         } catch (IOException ex) {
             Logger.getLogger(SocketHandler.class

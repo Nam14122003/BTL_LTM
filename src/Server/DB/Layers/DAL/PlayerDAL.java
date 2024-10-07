@@ -80,7 +80,7 @@ public class PlayerDAL {
             stm.setString(4, p.getName());
             stm.setString(5, p.getGender());
             stm.setInt(6, p.getYearOfBirth());
-            stm.setInt(7, p.getScore());
+            stm.setDouble(7, p.getScore());
             stm.setInt(8, p.getMatchCount());
             stm.setInt(9, p.getWinCount());
             stm.setInt(10, p.getLoseCount());
@@ -112,6 +112,7 @@ public class PlayerDAL {
                     + "Score=?,"
                     + "MatchCount=?,"
                     + "WinCount=?,"
+                    +"DrawCount=?,"
                     + "LoseCount=?,"
                     + "CurrentStreak=?,"
                     + "Blocked=?"
@@ -125,13 +126,14 @@ public class PlayerDAL {
             stm.setString(4, p.getName());
             stm.setString(5, p.getGender());
             stm.setInt(6, p.getYearOfBirth());
-            stm.setInt(7, p.getScore());
+            stm.setDouble(7, p.getScore());
             stm.setInt(8, p.getMatchCount());
             stm.setInt(9, p.getWinCount());
-            stm.setInt(10, p.getLoseCount());
-            stm.setInt(11, p.getCurrentStreak());
-            stm.setBoolean(12, p.isBlocked());
-            stm.setInt(13, p.getId());
+            stm.setInt(10, p.getDrawCount());
+            stm.setInt(11, p.getLoseCount());
+            stm.setInt(12, p.getCurrentStreak());
+            stm.setBoolean(13, p.isBlocked());
+            stm.setInt(14, p.getId());
 
             result = connector.sqlUpdate(stm);
         } catch (SQLException ex) {
