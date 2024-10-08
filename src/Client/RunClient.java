@@ -141,6 +141,5 @@ public class RunClient {
     public static void main(String[] args) {
         LookAndFeel.setNimbusLookAndFeel();
         new RunClient();
-        System.out.println("...");
     }
 }
