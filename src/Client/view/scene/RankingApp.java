@@ -29,6 +29,10 @@ public class RankingApp extends JFrame {
         tableModel.addColumn("Điểm");
         tableModel.addColumn("Số trận");
         tableModel.addColumn("Thắng");
+<<<<<<< HEAD
+=======
+        tableModel.addColumn("Hòa");
+>>>>>>> main
         tableModel.addColumn("Thua");
 
         rankingTable = new JTable(tableModel);
@@ -54,10 +58,17 @@ public class RankingApp extends JFrame {
         try {
             // Kết nối với cơ sở dữ liệu MySQL
             Connection connection = DriverManager.getConnection(
+<<<<<<< HEAD
                     "jdbc:mysql://localhost:3306/test_carodb", "root", "");
 
             // Truy vấn dữ liệu từ bảng Player
             String query = "SELECT Name, Score, MatchCount, WinCount, LoseCount FROM Player ORDER BY Score DESC";
+=======
+                    "jdbc:mysql://localhost:3306/carodb", "root", "123456");
+
+            // Truy vấn dữ liệu từ bảng Player
+            String query = "SELECT Name, Score, MatchCount, WinCount,DrawCount, LoseCount FROM Player ORDER BY Score DESC";
+>>>>>>> main
             PreparedStatement stmt = connection.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
 
@@ -75,9 +86,16 @@ public class RankingApp extends JFrame {
 
                 row.add(String.valueOf(rank)); // Hạng
                 row.add(name); // Tên người chơi
+<<<<<<< HEAD
                 row.add(String.valueOf(resultSet.getInt("Score"))); // Điểm
                 row.add(String.valueOf(resultSet.getInt("MatchCount"))); // Số trận
                 row.add(String.valueOf(resultSet.getInt("WinCount"))); // Thắng
+=======
+                row.add(String.valueOf(resultSet.getDouble("Score"))); // Điểm
+                row.add(String.valueOf(resultSet.getInt("MatchCount"))); // Số trận
+                row.add(String.valueOf(resultSet.getInt("WinCount"))); // Thắng
+                row.add(String.valueOf(resultSet.getInt("DrawCount")));
+>>>>>>> main
                 row.add(String.valueOf(resultSet.getInt("LoseCount"))); // Thua
                 tableModel.addRow(row);
 
@@ -91,6 +109,10 @@ public class RankingApp extends JFrame {
                             "Điểm: " + resultSet.getInt("Score") + "<br/>" +
                             "Số trận: " + resultSet.getInt("MatchCount") + "<br/>" +
                             "Thắng: " + resultSet.getInt("WinCount") + "<br/>" +
+<<<<<<< HEAD
+=======
+                            "Hòa: " + resultSet.getInt("DrawCount") + "<br/>" +
+>>>>>>> main
                             "Thua: " + resultSet.getInt("LoseCount") + "</html>");
                 }
 

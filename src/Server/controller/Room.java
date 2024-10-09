@@ -77,6 +77,19 @@ public class Room {
                         (Callable) () -> {
 
                             // tinh diem hoa
+                            server.db.layers.BUS.PlayerBUS bus = new server.db.layers.BUS.PlayerBUS();
+                            server.db.layers.DTO.Player winner = client1.getLoginPlayer();
+                            server.db.layers.DTO.Player loser = client2.getLoginPlayer();
+                            winner.addScore(0.5);
+                            loser.addScore(0.5);
+                            winner.setDrawCount(winner.getDrawCount()+1);
+                            winner.setMatchCount(winner.getMatchCount()+1);
+                            loser.setDrawCount(loser.getDrawCount()+1);
+                            System.out.println("Tran hoa"+ loser.getDrawCount()) ;
+                            loser.setMatchCount(loser.getMatchCount()+1);
+                            System.out.println("Score: " + winner.getScore());
+                            bus.update(winner);
+                            bus.update(loser);
                             new GameMatchBUS().add(new GameMatch(
                                     client1.getLoginPlayer().getId(),
                                     client1.getLoginPlayer().getId(),

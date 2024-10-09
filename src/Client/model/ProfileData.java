@@ -18,7 +18,7 @@ public class ProfileData {
     String gender = "Nam";
     int yearOfBirth = 1999;
 
-    int score = 0;
+    double score = 0;
     int matchCount = 0;
     int winCount = 0;
     int tieCount = 0;
@@ -29,7 +29,7 @@ public class ProfileData {
     public ProfileData() {
     }
 
-    public ProfileData(int id, String username, String name, String avatar, String gender, int yearOfBirth, int score, int matchCount, int winCount, int tieCount, int loseCount, int currentStreak, float winRate) {
+    public ProfileData(int id, String username, String name, String avatar, String gender, int yearOfBirth, double score, int matchCount, int winCount, int tieCount, int loseCount, int currentStreak, float winRate) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -93,11 +93,11 @@ public class ProfileData {
         this.gender = gender;
     }
 
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(double score) {
         this.score = score;
     }
 
