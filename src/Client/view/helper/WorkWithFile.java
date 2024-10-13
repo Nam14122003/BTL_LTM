@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package client.view.helper;
 
 import java.io.DataInputStream;
@@ -14,11 +10,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
-// source: https://raw.githubusercontent.com/HoangTran0410/SmartPhone_Store_Manage_Java/master/src/giaodienchuan/model/BackEnd/ReadWriteFile/WorkWithFile.java
+
 public class WorkWithFile {
 
     public static boolean write(String filepath, String s) {

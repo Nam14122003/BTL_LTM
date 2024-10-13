@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package shared.security;
 
 import java.security.MessageDigest;
@@ -12,10 +8,7 @@ import java.util.UUID;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+
 // https://teamvietdev.com/ma-hoa-va-giai-ma-aes-trong-java/
 public class AES {
 

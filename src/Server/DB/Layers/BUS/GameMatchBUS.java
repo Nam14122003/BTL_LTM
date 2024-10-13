@@ -1,18 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package server.db.layers.BUS;
 
 import server.db.layers.DAL.GameMatchDAL;
 import server.db.layers.DTO.GameMatch;
 import java.util.ArrayList;
 
-/**
- *
- * @author nguye
- */
+
 public class GameMatchBUS {
 
     ArrayList<GameMatch> listGameMatch = new ArrayList<>();

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package server.controller;
 
 import java.time.LocalDate;
@@ -17,10 +13,7 @@ import server.db.layers.DTO.GameMatch;
 import server.game.caro.History;
 import shared.constant.StreamData;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+
 public class Room {
 
     String id;

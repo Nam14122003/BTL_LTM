@@ -9,7 +9,7 @@ package Shared.constant;
  * @author Admin
  */
 public class Server {
-    public static String SERVER_HOST = "127.0.0.1";
+    public static String SERVER_HOST = "26.164.229.179";
     public static Integer SERVER_PORT_1 = 5056;
     public static Integer SERVER_PORT_2 = 5056;
     public static Integer SERVER_PORT_3 = 5056;

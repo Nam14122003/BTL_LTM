@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package client.controller;
 
 import client.RunClient;
@@ -27,10 +23,7 @@ import shared.constant.StreamData;
 import shared.security.AES;
 import shared.security.RSA;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+
 public class SocketHandler {
 
     Socket s;
@@ -50,7 +43,7 @@ public class SocketHandler {
 
             // establish the connection with server port 
             s = new Socket();
-            s.connect(new InetSocketAddress(ip, port), 4000);
+            s.connect(new InetSocketAddress(ip, port), 4000); // connection
             System.out.println("Connected to " + ip + ":" + port + ", localport:" + s.getLocalPort());
 
             // obtaining input and output streams

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package server.controller;
 
 import java.io.IOException;
@@ -15,10 +11,7 @@ import server.db.layers.BUS.PlayerBUS;
 import server.db.layers.DTO.GameMatch;
 import server.db.layers.DTO.Player;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+
 public class Admin implements Runnable {
 
     GameMatchBUS gameMatchBus;
