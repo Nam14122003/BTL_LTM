@@ -23,7 +23,11 @@ public class GameMatchTable {
             int Id2= match.getPlayerID2();
             data[i][2] = playerBUS.getById(Id2).getName();
             int winnerId= match.getWinnerID();
-            data[i][3] = playerBUS.getById(winnerId).getName();
+            if(playerBUS.getById(winnerId)==null){
+                data[i][3] = "No winner";
+            }
+            else{
+            data[i][3] = playerBUS.getById(winnerId).getName();}
             data[i][4] = match.getStartedTime();
         }
 

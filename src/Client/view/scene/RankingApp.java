@@ -1,5 +1,7 @@
 package Client.view.scene;
 
+import server.db.layers.BUS.PlayerBUS;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -12,7 +14,7 @@ public class RankingApp extends JFrame {
     private String currentUsername;  // Tên người đăng nhập
     private JLabel lblUserRank;  // Nhãn hiển thị thứ hạng người dùng hiện tại
     private JPanel panelUserInfo; // Panel để hiển thị thông tin cá nhân người dùng
-
+    private server.db.layers.BUS.PlayerBUS playerBus;
     public RankingApp(String currentUsername) {
         this.currentUsername = currentUsername;  // Lưu tên người đăng nhập
 
@@ -53,12 +55,13 @@ public class RankingApp extends JFrame {
     // Hàm tải dữ liệu bảng xếp hạng từ cơ sở dữ liệu
     private void loadRankingData() {
         try {
+            playerBus= new PlayerBUS();
             // Kết nối với cơ sở dữ liệu MySQL
             Connection connection = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/carodb", "root", "123456");
 
             // Truy vấn dữ liệu từ bảng Player
-            String query = "SELECT Name, Score, MatchCount, WinCount,DrawCount, LoseCount FROM Player ORDER BY Score DESC";
+            String query = "SELECT ID, Score, MatchCount, WinCount,DrawCount, LoseCount FROM Player ORDER BY Score DESC";
             PreparedStatement stmt = connection.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
 
@@ -72,8 +75,9 @@ public class RankingApp extends JFrame {
             // Thêm dữ liệu mới vào bảng và tìm thứ hạng của người đăng nhập
             while (resultSet.next()) {
                 Vector<String> row = new Vector<>();
-                String name = resultSet.getString("Name");
-
+                int id = resultSet.getInt("ID");
+                String name = playerBus.getById(id).getName();
+                String userName = playerBus.getById(id).getUser();
                 row.add(String.valueOf(rank)); // Hạng
                 row.add(name); // Tên người chơi
                 row.add(String.valueOf(resultSet.getDouble("Score"))); // Điểm
@@ -84,11 +88,11 @@ public class RankingApp extends JFrame {
                 tableModel.addRow(row);
 
                 // Kiểm tra nếu tên là người đăng nhập
-                if (name.equals(currentUsername)) {
+                if (userName.equals(currentUsername)) {
                     userRank = rank;  // Lưu lại thứ hạng của người đăng nhập
 
                     // Cập nhật thông tin của người dùng
-                    lblUserRank.setText("<html>Tên: " + currentUsername + "<br/>" +
+                    lblUserRank.setText("<html>Tên: " + name + "<br/>" +
                             "Hạng: " + userRank + "<br/>" +
                             "Điểm: " + resultSet.getInt("Score") + "<br/>" +
                             "Số trận: " + resultSet.getInt("MatchCount") + "<br/>" +
