@@ -10,8 +10,7 @@ public class GameMatchTable {
     public void addGameMatchesToPanel(JPanel jPanel3, List<server.db.layers.DTO.GameMatch> matchList) {
         // Cột tiêu đề cho bảng
         String[] columnNames = {
-                "Match ID", "Player 1 ID", "Player 2 ID", "Winner ID",
-                "Play Time", "Total Moves", "Started Time", "Chat"
+                "Match ID", "Player 1 ID", "Player 2 ID", "Started Time"
         };
 
         // Dữ liệu cho bảng
@@ -22,11 +21,7 @@ public class GameMatchTable {
             data[i][0] = match.getId();
             data[i][1] = match.getPlayerID1();
             data[i][2] = match.getPlayerID2();
-            data[i][3] = match.getWinnerID();
-            data[i][4] = match.getPlayTime();
-            data[i][5] = match.getTotalMove();
-            data[i][6] = match.getStartedTime(); // Đảm bảo định dạng thời gian phù hợp
-            data[i][7] = match.getChat(); // Nếu có
+            data[i][3] = match.getStartedTime();
         }
 
         // Tạo model cho bảng
