@@ -19,10 +19,10 @@ public class MysqlConnector {
 
     Connection conn = null;
 
-    String server = "localhost:3306";
+    String server = "localhost:3307";
     String db = "carodb";
     String user = "root";
-    String pass = "123456";
+    String pass = "";
 
     public MysqlConnector() {
         checkDriver();

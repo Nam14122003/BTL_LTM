@@ -58,7 +58,7 @@ public class RankingApp extends JFrame {
             playerBus= new PlayerBUS();
             // Kết nối với cơ sở dữ liệu MySQL
             Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/carodb", "root", "123456");
+                    "jdbc:mysql://localhost:3307/carodb", "root", "");
 
             // Truy vấn dữ liệu từ bảng Player
             String query = "SELECT ID, Score, MatchCount, WinCount,DrawCount, LoseCount FROM Player ORDER BY Score DESC";
