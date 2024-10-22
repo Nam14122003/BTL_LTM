@@ -11,20 +11,20 @@ package client.model;
  */
 public class ProfileData {
 
-    int id;
-    String username = "#"; // cài giá trị mặc định
-    String name = "#";
-    String avatar = "icons8_circled_user_male_skin_type_7_96px.png";
-    String gender = "Nam";
-    int yearOfBirth = 1999;
+    private int id;
+    private String username = "#"; // cài giá trị mặc định
+    private String name = "#";
+    private String avatar = "icons8_circled_user_male_skin_type_7_96px.png";
+    private String gender = "Nam";
+    private int yearOfBirth = 1999;
 
-    double score = 0;
-    int matchCount = 0;
-    int winCount = 0;
-    int tieCount = 0;
-    int loseCount = 0;
-    int currentStreak = 0;
-    float winRate = 0;
+    private double score = 0;
+    private int matchCount = 0;
+    private int winCount = 0;
+    private int tieCount = 0;
+    private int loseCount = 0;
+    private int currentStreak = 0;
+    private float winRate = 0;
 
     public ProfileData() {
     }

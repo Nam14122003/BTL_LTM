@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="CaroOnline_SocketJava">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/CaroOnline_SocketJava.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

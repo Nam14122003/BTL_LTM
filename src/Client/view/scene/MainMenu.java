@@ -5,9 +5,8 @@
  */
 package client.view.scene;
 
-import Client.view.scene.RankingApp;
-import Server.DB.Layers.DTO.GameMatchTable;
-import Server.DB.Layers.DTO.MatchListModel;
+import server.db.layers.dto.GameMatchTable;
+import server.db.layers.dto.MatchListModel;
 import client.RunClient;
 import client.view.helper.LookAndFeel;
 
@@ -18,7 +17,7 @@ import java.util.concurrent.Callable;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import shared.helper.CountDownTimer;
-import server.db.layers.DAL.GameMatchDAL;
+import server.db.layers.dal.GameMatchDAL;
 /**
  *
  * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
@@ -474,8 +473,8 @@ public class MainMenu extends javax.swing.JFrame {
 //                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 //        );
         //JPanel jPanel3 = new JPanel(); // Tạo hoặc lấy jPanel3 hiện có
-        GameMatchDAL gm = new server.db.layers.DAL.GameMatchDAL();
-        List<server.db.layers.DTO.GameMatch> matchList = gm.readDB(); // Lấy danh sách trận đấu từ database
+        GameMatchDAL gm = new server.db.layers.dal.GameMatchDAL();
+        List<server.db.layers.dto.GameMatch> matchList = gm.readDB(); // Lấy danh sách trận đấu từ database
         GameMatchTable gameMatchTable = new GameMatchTable();
         gameMatchTable.addGameMatchesToPanel(jPanel3, matchList); // Thêm bảng vào jPanel3
 

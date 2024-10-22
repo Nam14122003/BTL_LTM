@@ -1,13 +1,13 @@
-package Server.DB.Layers.DTO;
+package server.db.layers.dto;
 
 import javax.swing.AbstractListModel;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MatchListModel extends AbstractListModel<String> {
-    private List<server.db.layers.DTO.GameMatch> matches;
+    private List<server.db.layers.dto.GameMatch> matches;
 
-    public MatchListModel(List<server.db.layers.DTO.GameMatch> matches) {
+    public MatchListModel(List<server.db.layers.dto.GameMatch> matches) {
         this.matches = matches;
     }
 
@@ -18,7 +18,7 @@ public class MatchListModel extends AbstractListModel<String> {
 
     @Override
     public String getElementAt(int index) {
-        server.db.layers.DTO.GameMatch match = matches.get(index);
+        server.db.layers.dto.GameMatch match = matches.get(index);
         // Tạo chuỗi để hiển thị thông tin chi tiết trận đấu
         return "Match ID: " + match.getId() +
                 ", Player 1: " + match.getPlayerID1() +

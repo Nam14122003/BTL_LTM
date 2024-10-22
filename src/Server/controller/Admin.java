@@ -5,15 +5,25 @@
  */
 package server.controller;
 
+import client.RunClient;
+import client.controller.SocketHandler;
 import java.io.IOException;
+import java.util.ArrayList;
 import server.RunServer;
 import java.util.Scanner;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import server.db.layers.BUS.GameMatchBUS;
-import server.db.layers.BUS.PlayerBUS;
-import server.db.layers.DTO.GameMatch;
-import server.db.layers.DTO.Player;
+import server.db.layers.bus.GameMatchBUS;
+import server.db.layers.bus.PlayerBUS;
+import server.db.layers.dal.ServerDAL;
+import server.db.layers.dto.GameMatch;
+import server.db.layers.dto.Player;
+import server.db.layers.dto.Server;
+import server.view.AdminGUI;
+import server.view.ServerHome;
+import shared.constant.StreamData;
+import shared.helper.ServerHelper;
 
 /**
  *
@@ -23,60 +33,68 @@ public class Admin implements Runnable {
 
     GameMatchBUS gameMatchBus;
     PlayerBUS playerBus;
+    Server server;
+    AdminGUI runServer;
+    public static RunClient runClient;
+    public Admin(Server server) {
+        this.server = server;
+        runClient = new RunClient(1);
+    }
 
     @Override
     public void run() {
-        Scanner s = new Scanner(System.in);
-        String inp;
+        ServerDAL serverDAL = new ServerDAL();
+        // ArrayList<Server> servers=serverDAL.getAllServers();
+        runServer = new AdminGUI(this);
 
-        while (!RunServer.isShutDown) {
-            System.out.print("AdminCommand> ");
-            inp = s.nextLine();
-            try {
-                if (inp.equalsIgnoreCase("user-count")) {
-                    System.out.println("> " + RunServer.clientManager.getSize());
-                } else if (inp.equalsIgnoreCase("best-user")) {
-                    showBestPlayerInfo(getBestUser());
-                } else if (inp.equalsIgnoreCase("shortest-match")) {
-                    showShortestMatch(getShortestMatch());
-                } else if (inp.indexOf("block") == 0) {
-                    System.out.println(blockUser(inp.split(" ")[1]));
-                } else if (inp.indexOf("log") == 0) {
-                    showGameMatchDetails(inp.split(" ")[1]);
-                } else if (inp.equalsIgnoreCase("room-count")) {
-                    System.out.println("> " + RunServer.roomManager.getSize());
-                } else if (inp.equalsIgnoreCase("shutdown")) {
-                    System.out.println("shuting down...");
-                    RunServer.isShutDown = true;
+        runServer.setVisible(true);
+        runClient.socketHandler.connect(server.getServerIp(), server.getServerPort());
+        runClient.socketHandler.login("admin1", "Bcvt.son2003");
+     //   runClient.closeAllScene();
+        onReceiveListRoom();
 
-                    try {
-                        RunServer.ss.close();
-                    } catch (IOException ex) {
-                        Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }catch(ArrayIndexOutOfBoundsException e){
-                System.out.println("Thiếu tham số !!!");
-            }
-
-            if (inp.equalsIgnoreCase("help")) {
-                System.out.println("===[List commands]======================\n"
-                        + "======= Thiết yếu =======\n"
-                        + "user-count:        số người đang online\n"
-                        + "best-user:         thông tin user thắng nhiều nhất\n"
-                        + "shortest-match:    thông tin trận đấu có thời gian ngắn nhất\n"
-                        + "block <username>: block user có username là <username khỏi hệ thống>\n"
-                        + "log <match-id>:    xem thông tin trận đấu có mã là <match-id>\n"
-                        + "======= Thêm =======\n"
-                        + "room-count: số phòng đang mở\n"
-                        + "shutdown: tắt server\n"
-                        + "=======================================");
-            }
-        }
+//        while (!RunServer.isIsShutDown()) {
+//            System.out.print("AdminCommand> ");
+//            inp = s.nextLine();
+//            try {
+//                if (inp.equalsIgnoreCase("user-count")) {
+//                    System.out.println("> " + RunServer.getClientManager().getSize());
+//                } else if (inp.equalsIgnoreCase("best-user")) {
+//                    showBestPlayerInfo(getBestUser());
+//                } else if (inp.equalsIgnoreCase("shortest-match")) {
+//                    showShortestMatch(getShortestMatch());
+//                } else if (inp.indexOf("block") == 0) {
+//                    System.out.println(blockUser(inp.split(" ")[1]));
+//                } else if (inp.indexOf("log") == 0) {
+//                    showGameMatchDetails(inp.split(" ")[1]);
+//                } else if (inp.equalsIgnoreCase("room-count")) {
+//                    System.out.println("> " + RunServer.getRoomManager().getSize());
+//                } else if (inp.equalsIgnoreCase("shutdown")) {
+//                    System.out.println("shuting down...");
+//                    RunServer.setIsShutDown(true);
+//                }
+//            }catch(ArrayIndexOutOfBoundsException e){
+//                System.out.println("Thiếu tham số !!!");
+//            }
+//
+//            if (inp.equalsIgnoreCase("help")) {
+//                System.out.println("===[List commands]======================\n"
+//                        + "======= Thiết yếu =======\n"
+//                        + "user-count:        số người đang online\n"
+//                        + "best-user:         thông tin user thắng nhiều nhất\n"
+//                        + "shortest-match:    thông tin trận đấu có thời gian ngắn nhất\n"
+//                        + "block <username>: block user có username là <username khỏi hệ thống>\n"
+//                        + "log <match-id>:    xem thông tin trận đấu có mã là <match-id>\n"
+//                        + "======= Thêm =======\n"
+//                        + "room-count: số phòng đang mở\n"
+//                        + "shutdown: tắt server\n"
+//                        + "=======================================");
+//            }
+//        }
     }
 
     // Get player with the most win count
-    private Player getBestUser() {
+    public Player getBestUser() {
         Player bestPlayer = null;
         playerBus = new PlayerBUS();
         int max = 0;
@@ -89,7 +107,7 @@ public class Admin implements Runnable {
         return bestPlayer;
     }
 
-    private void showBestPlayerInfo(Player p) {
+    public void showBestPlayerInfo(Player p) {
         System.out.println("Player with the most win count: "
                 + p.getName() + " - " + p.getUser());
         System.out.println("Win count: " + p.getWinCount());
@@ -109,7 +127,7 @@ public class Admin implements Runnable {
         return shortestMatch;
     }
 
-    private void showShortestMatch(GameMatch m) {
+    public void showShortestMatch(GameMatch m) {
         playerBus = new PlayerBUS();
         Player p1 = new Player(playerBus.getById(m.getPlayerID1()));
         Player p2 = new Player(playerBus.getById(m.getPlayerID2()));
@@ -120,7 +138,7 @@ public class Admin implements Runnable {
     }
 
     // Block user with provided user
-    private String blockUser(String username) {
+    public String blockUser(String username) {
         playerBus = new PlayerBUS();
         for (Player p : playerBus.getList()) {
             if (p.getUser().equalsIgnoreCase(username)) {
@@ -132,7 +150,7 @@ public class Admin implements Runnable {
     }
 
     // Get Game match with provide id
-    private void showGameMatchDetails(String id) {
+    public void showGameMatchDetails(String id) {
         gameMatchBus = new GameMatchBUS();
         playerBus = new PlayerBUS();
         GameMatch m = gameMatchBus.getById(Integer.parseInt(id));
@@ -145,7 +163,39 @@ public class Admin implements Runnable {
     }
 
     public static void main(String[] args) {
-        Admin ad = new Admin();
-        ad.run();
+        System.out.println("son");
     }
+
+    public void onReceiveListRoom() {
+        ArrayList<Room> listRoom = RunServer.getMapRoomManager().get(ServerHelper.getKeyServer(server)).getRooms();
+        int roomCount = listRoom.size();
+
+        Vector vheader = new Vector();
+        vheader.add("Mã");
+        vheader.add("Cặp đấu");
+        vheader.add("Số người");
+        vheader.add("Hành động");
+
+        Vector vdata = new Vector();
+
+        for (Room room : listRoom) {
+            String pairData
+                    = ((room.getClient1() != null) ? room.getClient1().getLoginPlayer().getNameId() : "_")
+                    + " VS "
+                    + ((room.getClient2() != null) ? room.getClient2().getLoginPlayer().getNameId() : "_");
+            String roomId = room.id;
+            String title = pairData;
+            int clientCount = room.clients.size();
+
+            Vector vrow = new Vector();
+            vrow.add(roomId);
+            vrow.add(title);
+            vrow.add(clientCount);
+            vrow.add("Hóng hớt");
+            vdata.add(vrow);
+        }
+
+        runServer.setListRoom(vdata, vheader,this);
+    }
+
 }

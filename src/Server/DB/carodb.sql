@@ -82,3 +82,21 @@ REPLACE INTO `player` (`ID`, `Username`, `Password`, `Avatar`, `Name`, `Gender`,
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
+
+CREATE TABLE `carodb`.`servers` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `server_ip` VARCHAR(255) NOT NULL,
+  `server_port` INT NOT NULL,
+  PRIMARY KEY (`id`));
+ALTER TABLE `carodb`.`servers` 
+ADD COLUMN `status` VARCHAR(45) NOT NULL AFTER `server_port`;
+
+INSERT INTO servers(server_ip, server_port, status) VALUES('127.0.0.1',5056,'Bật');
+INSERT INTO servers(server_ip, server_port, status) VALUES('127.0.0.1',5056,'Bật');
+INSERT INTO servers(server_ip, server_port, status) VALUES('127.0.0.1',5056,'Bật');
+INSERT INTO servers(server_ip, server_port, status) VALUES('127.0.0.1',5056,'Bật');
+
+UPDATE `carodb`.`servers` SET `server_ip` = '192.168.0.113' WHERE (`id` = '2');
+DELETE FROM `carodb`.`servers` WHERE (`id` = '3');
+DELETE FROM `carodb`.`servers` WHERE (`id` = '4');

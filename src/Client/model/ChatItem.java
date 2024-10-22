@@ -11,9 +11,9 @@ package client.model;
  */
 public class ChatItem {
 
-    String time;
-    String owner;
-    String content;
+    private String time;
+    private String owner;
+    private String content;
 
     public ChatItem(String time, String owner, String content) {
         this.time = time;

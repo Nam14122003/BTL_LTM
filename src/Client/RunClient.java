@@ -43,10 +43,13 @@ public class RunClient {
     // controller 
     public static SocketHandler socketHandler;
 
-    public RunClient() {
+    public RunClient(int role) {
         socketHandler = new SocketHandler();
         initScene();
-        openScene(SceneName.CONNECTSERVER);
+        if (role == 0) {
+            openScene(SceneName.CONNECTSERVER);
+        }
+
     }
 
     public void initScene() {
@@ -140,6 +143,6 @@ public class RunClient {
 
     public static void main(String[] args) {
         LookAndFeel.setNimbusLookAndFeel();
-        new RunClient();
+        new RunClient(0);
     }
 }

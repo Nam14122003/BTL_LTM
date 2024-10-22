@@ -5,7 +5,7 @@
  */
 package client.controller;
 
-import Client.view.scene.RankingApp;
+import client.view.scene.RankingApp;
 import client.RunClient;
 import client.model.ChatItem;
 import client.model.PlayerInGame;

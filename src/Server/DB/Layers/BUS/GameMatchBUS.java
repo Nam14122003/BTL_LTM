@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package server.db.layers.BUS;
+package server.db.layers.bus;
 
-import server.db.layers.DAL.GameMatchDAL;
-import server.db.layers.DTO.GameMatch;
+import server.db.layers.dal.GameMatchDAL;
+import server.db.layers.dto.GameMatch;
 import java.util.ArrayList;
 
 /**
@@ -15,8 +15,8 @@ import java.util.ArrayList;
  */
 public class GameMatchBUS {
 
-    ArrayList<GameMatch> listGameMatch = new ArrayList<>();
-    GameMatchDAL gameMatchDAL = new GameMatchDAL();
+    private ArrayList<GameMatch> listGameMatch = new ArrayList<>();
+    private GameMatchDAL gameMatchDAL = new GameMatchDAL();
 
     public GameMatchBUS() {
         readDB();

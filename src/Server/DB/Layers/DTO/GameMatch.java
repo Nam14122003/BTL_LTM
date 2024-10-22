@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package server.db.layers.DTO;
+package server.db.layers.dto;
 
 import java.time.LocalDateTime;
 
@@ -13,14 +13,14 @@ import java.time.LocalDateTime;
  */
 public class GameMatch {
 
-    int id;
-    int playerID1;
-    int playerID2;
-    int winnerID;
-    int playTime;
-    int totalMove;
-    LocalDateTime startedTime;
-    String chat = "";
+    private int id;
+    private int playerID1;
+    private int playerID2;
+    private int winnerID;
+    private int playTime;
+    private int totalMove;
+    private LocalDateTime startedTime;
+    private String chat = "";
 
     public GameMatch(int id, int playerID1, int playerID2, int winnerID, int playTime, int totalMove, LocalDateTime startedTime, String chat) {
         this.id = id;

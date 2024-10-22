@@ -1,9 +1,10 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package server.db.layers.DTO;
+package server.db.layers.dto;
 
 /**
  *
@@ -11,20 +12,20 @@ package server.db.layers.DTO;
  */
 public class Player {
 
-    int id;
-    String username;
-    String password;
-    String avatar;
-    String name;
-    String gender;
-    int yearOfBirth;
-    double score = 0; // gia tri mac dinh
-    int matchCount = 0;
-    int winCount = 0;
-    int drawCount = 0;
-    int loseCount = 0;
-    int currentStreak = 0; // số âm là chuỗi thua, dương là chuỗi thắng
-    boolean blocked = false;
+    private int id;
+    private String username;
+    private String password;
+    private String avatar;
+    private String name;
+    private String gender;
+    private int yearOfBirth;
+    private double score = 0; // gia tri mac dinh
+    private int matchCount = 0;
+    private int winCount = 0;
+    private int drawCount = 0;
+    private int loseCount = 0;
+    private int currentStreak = 0; // số âm là chuỗi thua, dương là chuỗi thắng
+    private boolean blocked = false;
 
     public Player() {
 

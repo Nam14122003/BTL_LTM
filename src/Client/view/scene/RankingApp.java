@@ -1,4 +1,4 @@
-package Client.view.scene;
+package client.view.scene;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

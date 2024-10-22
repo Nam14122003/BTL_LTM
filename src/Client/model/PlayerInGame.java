@@ -11,9 +11,9 @@ package client.model;
  */
 public class PlayerInGame {
 
-    String username;
-    String nameId;
-    String avatar;
+    private String username;
+    private String nameId;
+    private String avatar;
 
     public PlayerInGame(String username, String nameId, String avatar) {
         this.username = username;

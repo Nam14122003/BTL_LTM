@@ -5,11 +5,11 @@
  */
 package client.view.scene;
 
-import static Shared.constant.Server.SERVER_HOST;
-import static Shared.constant.Server.SERVER_PORT_1;
-import static Shared.constant.Server.SERVER_PORT_2;
-import static Shared.constant.Server.SERVER_PORT_3;
-import static Shared.constant.Server.SERVER_PORT_4;
+import static shared.constant.Server.SERVER_HOST;
+import static shared.constant.Server.SERVER_PORT_1;
+import static shared.constant.Server.SERVER_PORT_2;
+import static shared.constant.Server.SERVER_PORT_3;
+import static shared.constant.Server.SERVER_PORT_4;
 import client.RunClient;
 import javax.swing.JOptionPane;
 
@@ -107,11 +107,13 @@ public class ConnectServer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
-        String ip = SERVER_HOST;;
+        String ip = SERVER_HOST;
         int port;
         
+        
         String selectedItem = (String) selectServer.getSelectedItem();
-        System.out.println("Server đã chọn: " + selectedItem);
+        System.out.println("Server đã chọn: " + selectedItem + " "+ip);
+        
         
         switch (selectedItem) {
             case "Server 1":
@@ -130,6 +132,7 @@ public class ConnectServer extends javax.swing.JFrame {
                 port = SERVER_PORT_1;
                 break;
         }
+        System.out.println(port);
 
         connect(ip, port);
     }//GEN-LAST:event_btnConnectActionPerformed
