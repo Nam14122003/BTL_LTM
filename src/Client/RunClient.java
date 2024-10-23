@@ -44,8 +44,10 @@ public class RunClient {
     public static SocketHandler socketHandler;
 
     public RunClient(int role) {
+        LookAndFeel.setNimbusLookAndFeel();
         socketHandler = new SocketHandler();
         initScene();
+        
         if (role == 0) {
             openScene(SceneName.CONNECTSERVER);
         }

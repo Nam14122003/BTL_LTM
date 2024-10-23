@@ -16,7 +16,7 @@ import java.util.Vector;
 import javax.swing.table.TableCellRenderer;
 import server.RunServer;
 import server.controller.Admin;
-import static server.controller.Admin.runClient;
+import static server.controller.Admin.joinRoom;
 import server.db.layers.dal.ServerDAL;
 import server.db.layers.dto.GameMatch;
 import server.db.layers.dto.Player;
@@ -242,7 +242,7 @@ class ButtonEditorAdmin extends DefaultCellEditor {
                  int row = table.getSelectedRow();
                 if (row >= 0) {
                   String roomId = table.getModel().getValueAt(row, column).toString();
-                     admin.runClient.socketHandler.watchRoom(roomId);
+                     admin.joinRoom.watchRoom(roomId);
         
                  }  
                 fireEditingStopped();

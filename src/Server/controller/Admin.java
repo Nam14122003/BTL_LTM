@@ -5,8 +5,9 @@
  */
 package server.controller;
 
-import client.RunClient;
 import client.controller.SocketHandler;
+import client.view.helper.LookAndFeel;
+import client.view.scene.InGame;
 import java.io.IOException;
 import java.util.ArrayList;
 import server.RunServer;
@@ -21,6 +22,7 @@ import server.db.layers.dto.GameMatch;
 import server.db.layers.dto.Player;
 import server.db.layers.dto.Server;
 import server.view.AdminGUI;
+import server.view.InGameAdmin;
 import server.view.ServerHome;
 import shared.constant.StreamData;
 import shared.helper.ServerHelper;
@@ -31,26 +33,34 @@ import shared.helper.ServerHelper;
  */
 public class Admin implements Runnable {
 
+    public enum SceneName {
+        INGAME
+    }
     GameMatchBUS gameMatchBus;
     PlayerBUS playerBus;
     Server server;
-    AdminGUI runServer;
-    public static RunClient runClient;
+    public static AdminGUI runServer;
+    public static InGameAdmin inGameScene;
+    public static JoinRoom joinRoom;
+
     public Admin(Server server) {
+        LookAndFeel.setNimbusLookAndFeel();
         this.server = server;
-        runClient = new RunClient(1);
+        inGameScene = new InGameAdmin();
+        joinRoom = new JoinRoom();
     }
 
     @Override
     public void run() {
+
         ServerDAL serverDAL = new ServerDAL();
         // ArrayList<Server> servers=serverDAL.getAllServers();
         runServer = new AdminGUI(this);
 
         runServer.setVisible(true);
-        runClient.socketHandler.connect(server.getServerIp(), server.getServerPort());
-        runClient.socketHandler.login("admin1", "Bcvt.son2003");
-     //   runClient.closeAllScene();
+        joinRoom.connect(server.getServerIp(), server.getServerPort());
+        joinRoom.login("admin1", "Bcvt.son2003");
+        //   runClient.closeAllScene();
         onReceiveListRoom();
 
 //        while (!RunServer.isIsShutDown()) {
@@ -91,6 +101,34 @@ public class Admin implements Runnable {
 //                        + "=======================================");
 //            }
 //        }
+    }
+
+    public static void openScene(Admin.SceneName sceneName) {
+        if (null != sceneName) {
+            switch (sceneName) {
+                case INGAME:
+                    inGameScene = new InGameAdmin();
+                    inGameScene.setVisible(true);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public static void closeScene(Admin.SceneName sceneName) {
+        if (null != sceneName) {
+            switch (sceneName) {
+                case INGAME:
+                    inGameScene.dispose();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+      public static void closeAllScene() {
+        inGameScene.dispose();
     }
 
     // Get player with the most win count
@@ -163,7 +201,7 @@ public class Admin implements Runnable {
     }
 
     public static void main(String[] args) {
-        System.out.println("son");
+        System.out.println("1");
     }
 
     public void onReceiveListRoom() {
@@ -195,7 +233,7 @@ public class Admin implements Runnable {
             vdata.add(vrow);
         }
 
-        runServer.setListRoom(vdata, vheader,this);
+        runServer.setListRoom(vdata, vheader, this);
     }
 
 }
