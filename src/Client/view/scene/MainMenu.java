@@ -6,18 +6,22 @@
 package client.view.scene;
 
 import server.db.layers.dto.GameMatchTable;
-import server.db.layers.dto.MatchListModel;
 import client.RunClient;
 import client.view.helper.LookAndFeel;
 
-import java.util.ArrayList;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URL;
+
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.Callable;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import shared.helper.CountDownTimer;
 import server.db.layers.dal.GameMatchDAL;
+
 /**
  *
  * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
@@ -43,10 +47,52 @@ public class MainMenu extends javax.swing.JFrame {
     public MainMenu() {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.setTitle("Caro Game - " + RunClient.socketHandler.getLoginUser());
-
+        setTitle("Caro Đại Chiến - Trang Chủ - "+ RunClient.socketHandler.getLoginUser());
+           try {
+            URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLw-jhsZE2DjYrRMcg7lXaRnhiYpjwKkRJ2w&s");
+            Image logo = ImageIO.read(url);  
+            setIconImage(logo); 
+        } catch (IOException e) {
+               System.out.println("1");
+        }
+        this.setSize(1200, 800);
         // default to hidden
         setDisplayState(State.DEFAULT);
+        Font buttonFont = new Font("Arial", Font.BOLD, 18); // You can choose the font and size
+        this.setLocation(600, 350);
+        JLabel lblTitle = new JLabel("Đại chiến Caro");
+        lblTitle.setOpaque(true); // Để có thể thấy màu nền
+        lblTitle.setBackground(Color.RED); // Màu nền đỏ
+        lblTitle.setForeground(Color.WHITE); // Màu chữ trắng
+        lblTitle.setHorizontalAlignment(SwingConstants.CENTER); // Căn giữa
+        lblTitle.setFont(new Font("Arial", Font.BOLD, 24)); // Đặt font chữ cho tiêu đề
+       jPanel2.setBackground(new java.awt.Color(240, 240, 240));
+        jPanel1.setBackground(new java.awt.Color(240, 240, 240));
+        btnFindMatch.setFont(buttonFont);
+        btnFindMatch.setPreferredSize(new Dimension(200, 50)); // Width, Height
+
+        btnRanking.setFont(buttonFont);
+        btnRanking.setPreferredSize(new Dimension(200, 50));
+
+        btnLogout.setFont(buttonFont);
+        btnLogout.setPreferredSize(new Dimension(200, 50));
+
+        btnProfile.setFont(buttonFont);
+        btnProfile.setPreferredSize(new Dimension(200, 50));
+
+        btnAcceptPairMatch.setFont(buttonFont);
+        btnAcceptPairMatch.setPreferredSize(new Dimension(200, 50));
+
+        btnDeclinePairMatch.setFont(buttonFont);
+        btnDeclinePairMatch.setPreferredSize(new Dimension(200, 50));
+
+        btnCancelFindMatch.setFont(buttonFont);
+        btnCancelFindMatch.setPreferredSize(new Dimension(200, 50));
+
+        btnRefreshListRoom.setFont(buttonFont);
+        btnRefreshListRoom.setPreferredSize(new Dimension(200, 50));
+        setComponentBackgrounds(this.getContentPane(), new Color(240, 240, 240));
+        plBtns.setLayout(new FlowLayout());
     }
 
     public void setListRoom(Vector vdata, Vector vheader) {
@@ -172,11 +218,8 @@ public class MainMenu extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         plBtns = new javax.swing.JPanel();
-        btnCreateRoom = new javax.swing.JButton();
         btnFindMatch = new javax.swing.JButton();
-        btnJoin = new javax.swing.JButton();
         btnRanking = new javax.swing.JButton();
-        btnWatch = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         btnLogout = new javax.swing.JButton();
         btnProfile = new javax.swing.JButton();
@@ -226,10 +269,13 @@ public class MainMenu extends javax.swing.JFrame {
         setTitle("Caro Game");
         setResizable(false);
 
-        plBtns.setBorder(javax.swing.BorderFactory.createTitledBorder("Chức năng"));
+        Font titledBorderFont = new java.awt.Font("Dialog", java.awt.Font.BOLD, 18); // Chữ đậm, kích thước 18
 
-//        btnCreateRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_add_24px.png"))); // NOI18N
-//        btnCreateRoom.setText("Tạo phòng");
+// Tạo TitledBorder với font tùy chỉnh
+        plBtns.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chức năng",
+                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+                javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                titledBorderFont));
 
         btnFindMatch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_circled_play_24px.png"))); // NOI18N
         btnFindMatch.setText("Tìm trận");
@@ -239,8 +285,6 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-//        btnJoin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_open_door_24px.png"))); // NOI18N
-//        btnJoin.setText("Vào phòng");
         btnProfile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_contact_24px.png"))); // NOI18N
         btnProfile.setText("Hồ sơ");
         btnProfile.addActionListener(new java.awt.event.ActionListener() {
@@ -254,49 +298,33 @@ public class MainMenu extends javax.swing.JFrame {
             // Tạo cửa sổ bảng xếp hạng
             RankingApp rankingApp = new RankingApp(RunClient.socketHandler.getLoginUser());
         });
-//        btnWatch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_vision_24px.png"))); // NOI18N
-//        btnWatch.setText("Vào xem");
-//        btnWatch.addActionListener(new java.awt.event.ActionListener() {
-//            public void actionPerformed(java.awt.event.ActionEvent evt) {
-//                btnWatchActionPerformed(evt);
-//            }
-//        });
-
         javax.swing.GroupLayout plBtnsLayout = new javax.swing.GroupLayout(plBtns);
         plBtns.setLayout(plBtnsLayout);
         plBtnsLayout.setHorizontalGroup(
-            plBtnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, plBtnsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnFindMatch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-//                .addComponent(btnWatch)
-//                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-//                .addComponent(btnJoin)
-//                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnProfile)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnRanking)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                //.addComponent(btnCreateRoom)
-                 .addContainerGap()
-            )
+                plBtnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, plBtnsLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(btnFindMatch)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                                .addComponent(btnProfile)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                                .addComponent(btnRanking)
+                                .addContainerGap()
+                        )
         );
         plBtnsLayout.setVerticalGroup(
-            plBtnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(plBtnsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(plBtnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    //.addComponent(btnCreateRoom)
-                    .addComponent(btnFindMatch)
-                  //  .addComponent(btnJoin)
-                     .addComponent(btnProfile)
-                    .addComponent(btnRanking)
-                 //   .addComponent(btnWatch)
-                )
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                )
+                plBtnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(plBtnsLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(plBtnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(btnFindMatch)
+                                        .addComponent(btnProfile)
+                                        .addComponent(btnRanking)
+                                )
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        )
         );
+
 
         btnLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_logout_rounded_left_24px.png"))); // NOI18N
         btnLogout.setText("Đăng xuất");
@@ -306,27 +334,6 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnLogout)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            )
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLogout)
-                )
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
 
         jProgressBar1.setIndeterminate(true);
 
@@ -347,32 +354,34 @@ public class MainMenu extends javax.swing.JFrame {
         javax.swing.GroupLayout plFindingMatchLayout = new javax.swing.GroupLayout(plFindingMatch);
         plFindingMatch.setLayout(plFindingMatchLayout);
         plFindingMatchLayout.setHorizontalGroup(
-            plFindingMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(plFindingMatchLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancelFindMatch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jProgressBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(5, 5, 5))
-            .addGroup(plFindingMatchLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(lbFindMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                plFindingMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(plFindingMatchLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCancelFindMatch)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jProgressBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
+                        .addGroup(plFindingMatchLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(lbFindMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
+
         plFindingMatchLayout.setVerticalGroup(
-            plFindingMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(plFindingMatchLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbFindMatch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(plFindingMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCancelFindMatch)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                plFindingMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(plFindingMatchLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lbFindMatch)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(plFindingMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnCancelFindMatch)
+                                        .addComponent(jProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
 
         tbListRoom.setAutoCreateRowSorter(true);
         tbListRoom.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -422,67 +431,25 @@ public class MainMenu extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-//        tpRoomAndUser.addTab("Lịch sử", jPanel5);
-
-//        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-//            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-//            public int getSize() { return strings.length; }
-//            public String getElementAt(int i) { return strings[i]; }
-//        });
-        // Truy vấn dữ liệu từ cơ sở dữ liệu
-        // Tạo một đối tượng GameMatchDAL
-//        server.db.layers.DAL.GameMatchDAL gameMatchDAL = new server.db.layers.DAL.GameMatchDAL();
-//
-//        // Sau đó gọi phương thức readDB() thông qua đối tượng này
-//        List<server.db.layers.DTO.GameMatch> matchList = gameMatchDAL.readDB();
-
-        // Lấy JList từ jScrollPane
-       // JList<String> jList1 = (JList<String>) jScrollPane2.getViewport().getView();
-
-        // Cập nhật model cho JList
-        //jList1.setModel(new MatchListModel(matchList));
-
-        // Đặt lại viewport cho jScrollPane
         jScrollPane2.setViewportView(jList1);
 
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_contact_24px.png"))); // NOI18N
         jButton1.setText("Xem thông tin");
 
-    //    javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        // Thiết lập Layout cho jPanel3
-//        jPanel3.setLayout(jPanel3Layout);
-//        jPanel3Layout.setHorizontalGroup(
-//                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//                        .addGroup(jPanel3Layout.createSequentialGroup()
-//                                .addContainerGap()
-//                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE) // Chiều rộng tối đa cho jScrollPane2
-//                                .addContainerGap())
-//                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-//                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-//                                .addComponent(jButton1) // Đặt jButton1 ở góc phải dưới
-//                                .addContainerGap())
-//        );
-//
-//        jPanel3Layout.setVerticalGroup(
-//                jPanel3Layout.createSequentialGroup()
-//                        .addContainerGap()
-//                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE) // Chiều cao cố định cho jScrollPane2
-//                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-//                        .addComponent(jButton1) // jButton1 nằm bên dưới
-//                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-//        );
-        //JPanel jPanel3 = new JPanel(); // Tạo hoặc lấy jPanel3 hiện có
         GameMatchDAL gm = new server.db.layers.dal.GameMatchDAL();
         List<server.db.layers.dto.GameMatch> matchList = gm.readDB(); // Lấy danh sách trận đấu từ database
         GameMatchTable gameMatchTable = new GameMatchTable();
         gameMatchTable.addGameMatchesToPanel(jPanel3, matchList); // Thêm bảng vào jPanel3
+        JLabel lblHistory = new JLabel("Lịch sử");
+        lblHistory.setFont(new java.awt.Font("Dialog", java.awt.Font.BOLD, 18)); // Kích thước chữ 18
+        lblHistory.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-
-
-//
-        tpRoomAndUser.addTab("Lịch sử", jPanel3);
-
+// Thêm JLabel vào tab
+        tpRoomAndUser.addTab(null, jPanel3); // Thêm tab mà không có tiêu đề
+        tpRoomAndUser.setTabComponentAt(tpRoomAndUser.indexOfComponent(jPanel3), lblHistory); // Đặt JLabel là tiêu đề tab
+        tpRoomAndUser.revalidate();
+        tpRoomAndUser.repaint();
         lbFoundMatch.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lbFoundMatch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbFoundMatch.setText("Đã tìm thấy đối thủ ... Vào ngay?");
@@ -510,63 +477,95 @@ public class MainMenu extends javax.swing.JFrame {
         javax.swing.GroupLayout plFoundMatchLayout = new javax.swing.GroupLayout(plFoundMatch);
         plFoundMatch.setLayout(plFoundMatchLayout);
         plFoundMatchLayout.setHorizontalGroup(
-            plFoundMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(plFoundMatchLayout.createSequentialGroup()
-                .addGap(131, 131, 131)
-                .addComponent(btnDeclinePairMatch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAcceptPairMatch)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, plFoundMatchLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(plFoundMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbFoundMatch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbTimerPairMatch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        plFoundMatchLayout.setVerticalGroup(
-            plFoundMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(plFoundMatchLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbFoundMatch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbTimerPairMatch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(plFoundMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDeclinePairMatch)
-                    .addComponent(btnAcceptPairMatch))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                plFoundMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(plFoundMatchLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(plFoundMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lbFoundMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lbTimerPairMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, plFoundMatchLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnDeclinePairMatch)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAcceptPairMatch)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        plFoundMatchLayout.setVerticalGroup(
+                plFoundMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(plFoundMatchLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lbFoundMatch)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbTimerPairMatch)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(plFoundMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(btnDeclinePairMatch)
+                                        .addComponent(btnAcceptPairMatch))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+// Tạo một GroupLayout cho jPanel1 (nơi chứa nút Đăng xuất)
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+
+// Đặt cấu hình cho horizontal group
+        jPanel1Layout.setHorizontalGroup(
+                jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE) // Đẩy nội dung sang bên phải
+                        .addComponent(btnLogout) // Nút Đăng xuất
+                        .addContainerGap()
+        );
+
+// Đặt cấu hình cho vertical group
+        jPanel1Layout.setVerticalGroup(
+                jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE) // Đẩy nội dung lên trên
+                        .addComponent(btnLogout) // Nút Đăng xuất sẽ nằm dưới cùng
+                        .addContainerGap()
+        );
+
+// Cập nhật GroupLayout cho jPanel2 để căn chỉnh nút Đăng xuất
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tpRoomAndUser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(plFindingMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(plBtns, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(plFoundMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(tpRoomAndUser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                        .addComponent(plFindingMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(plBtns, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(plFoundMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                )
+                                .addContainerGap())
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE) // Đẩy nút Đăng xuất sang phải
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE) // Nút Đăng xuất ở dưới cùng
+                                .addContainerGap()
+                        )
         );
+
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
-                .addComponent(plBtns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(plFindingMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(plFoundMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tpRoomAndUser, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(plBtns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(plFindingMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(plFoundMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tpRoomAndUser, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE) // Tăng chiều cao lên 400
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE) // Thêm khoảng trống giữa các thành phần
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE) // Nút Đăng xuất ở dưới cùng
+                        .addContainerGap()
         );
+
+
+
+        jPanel2.revalidate();
+        jPanel2.repaint();
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -583,6 +582,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -637,30 +637,6 @@ public class MainMenu extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -668,19 +644,24 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
     }
+    private void setComponentBackgrounds(Component component, Color color) {
+        component.setBackground(color);
+        if (component instanceof JComponent) {
+            for (Component child : ((JComponent) component).getComponents()) {
+                setComponentBackgrounds(child, color);
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAcceptPairMatch;
     private javax.swing.JButton btnCancelFindMatch;
-    private javax.swing.JButton btnCreateRoom;
     private javax.swing.JButton btnDeclinePairMatch;
     private javax.swing.JButton btnFindMatch;
     private javax.swing.JButton btnRanking;
-    private javax.swing.JButton btnJoin;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnProfile;
     private javax.swing.JButton btnRefreshListRoom;
-    private javax.swing.JButton btnWatch;
     private javax.swing.JButton jButton1;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;

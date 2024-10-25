@@ -169,7 +169,7 @@ public class JoinRoom {
         this.loginUser = null;
 
         // chuyển scene
-        RunClient.closeAllScene();
+        Admin.closeAllScene();
     }
 
     private void onReceiveWatchRoom(String received) {

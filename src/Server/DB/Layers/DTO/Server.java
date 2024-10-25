@@ -10,12 +10,14 @@ package server.db.layers.dto;
  */
 public class Server {
     private int id;
+    private String serverName;
     private String serverIp;
     private int serverPort;
     private String status;
 
-    public Server(int id, String serverIp, int serverPort, String status) {
+    public Server(int id, String serverName, String serverIp, int serverPort, String status) {
         this.id = id;
+        this.serverName = serverName;
         this.serverIp = serverIp;
         this.serverPort = serverPort;
         this.status = status;
@@ -27,6 +29,14 @@ public class Server {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
 
     public String getServerIp() {
@@ -55,8 +65,9 @@ public class Server {
 
     @Override
     public String toString() {
-        return "Server{" + "id=" + id + ", serverIp=" + serverIp + ", serverPort=" + serverPort + ", status=" + status + '}';
+        return "Server{" + "id=" + id + ", serverName=" + serverName + ", serverIp=" + serverIp + ", serverPort=" + serverPort + ", status=" + status + '}';
     }
+
     
     
     

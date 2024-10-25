@@ -19,13 +19,14 @@ public class ServerDAL {
     }
 
     public void addServer(Server server) {
-        String query = "INSERT INTO servers (server_ip, server_port, status) VALUES (?, ?, ?)";
+        String query = "INSERT INTO servers (server_name, server_ip, server_port, status) VALUES (?, ?, ?, ?)";
 
         try {
             PreparedStatement stmt = connector.getConnection().prepareStatement(query);
-            stmt.setString(1, server.getServerIp());
-            stmt.setInt(2, server.getServerPort());
-            stmt.setString(3, server.getStatus());
+             stmt.setString(1, server.getServerName());
+            stmt.setString(2, server.getServerIp());
+            stmt.setInt(3, server.getServerPort());
+            stmt.setString(4, server.getStatus());
 
             stmt.executeUpdate();
             System.out.println("Thêm server thành công!");
@@ -43,11 +44,12 @@ public class ServerDAL {
 
             while (rs.next()) {
                 int id = rs.getInt("id");
+                String serverName = rs.getString("server_name");
                 String serverIp = rs.getString("server_ip");
                 int serverPort = rs.getInt("server_port");
                 String status = rs.getString("status");
 
-                servers.add(new Server(id, serverIp, serverPort, status));
+                servers.add(new Server(id,serverName, serverIp, serverPort, status));
             }
 
         } catch (SQLException e) {
@@ -68,11 +70,12 @@ public class ServerDAL {
 
             while (rs.next()) {
                 int id = rs.getInt("id");
+                String serverName = rs.getString("server_name");
                 String serverIp = rs.getString("server_ip");
                 int serverPort = rs.getInt("server_port");
                 String status = rs.getString("status");
 
-                server = new Server(id, serverIp, serverPort, status); // Lưu thông tin server
+                server = new Server(id,serverName, serverIp, serverPort, status);
             }
 
         } catch (SQLException e) {
@@ -96,14 +99,15 @@ public class ServerDAL {
     }
 
     public void updateServer(Server server) {
-        String query = "UPDATE servers SET server_ip = ?, server_port = ?, status = ? WHERE id = ?";
+        String query = "UPDATE servers SET server_name = ?, server_ip = ?, server_port = ?, status = ? WHERE id = ?";
 
         try (PreparedStatement stmt = connector.getConnection().prepareStatement(query);) {
-
-            stmt.setString(1, server.getServerIp());
-            stmt.setInt(2, server.getServerPort());
-            stmt.setString(3, server.getStatus());
-            stmt.setInt(4, server.getId());
+            
+            stmt.setString(1, server.getServerName());
+            stmt.setString(2, server.getServerIp());
+            stmt.setInt(3, server.getServerPort());
+            stmt.setString(4, server.getStatus());
+            stmt.setInt(5, server.getId());
 
             stmt.executeUpdate();
             System.out.println("Cập nhật server thành công!");

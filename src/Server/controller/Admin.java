@@ -5,16 +5,10 @@
  */
 package server.controller;
 
-import client.controller.SocketHandler;
 import client.view.helper.LookAndFeel;
-import client.view.scene.InGame;
-import java.io.IOException;
 import java.util.ArrayList;
-import server.RunServer;
-import java.util.Scanner;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import server.RunServer;
 import server.db.layers.bus.GameMatchBUS;
 import server.db.layers.bus.PlayerBUS;
 import server.db.layers.dal.ServerDAL;
@@ -23,14 +17,8 @@ import server.db.layers.dto.Player;
 import server.db.layers.dto.Server;
 import server.view.AdminGUI;
 import server.view.InGameAdmin;
-import server.view.ServerHome;
-import shared.constant.StreamData;
 import shared.helper.ServerHelper;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class Admin implements Runnable {
 
     public enum SceneName {
@@ -38,7 +26,7 @@ public class Admin implements Runnable {
     }
     GameMatchBUS gameMatchBus;
     PlayerBUS playerBus;
-    Server server;
+    public Server server;
     public static AdminGUI runServer;
     public static InGameAdmin inGameScene;
     public static JoinRoom joinRoom;
@@ -52,55 +40,10 @@ public class Admin implements Runnable {
 
     @Override
     public void run() {
-
         ServerDAL serverDAL = new ServerDAL();
-        // ArrayList<Server> servers=serverDAL.getAllServers();
         runServer = new AdminGUI(this);
-
         runServer.setVisible(true);
-        joinRoom.connect(server.getServerIp(), server.getServerPort());
-        joinRoom.login("admin1", "Bcvt.son2003");
-        //   runClient.closeAllScene();
         onReceiveListRoom();
-
-//        while (!RunServer.isIsShutDown()) {
-//            System.out.print("AdminCommand> ");
-//            inp = s.nextLine();
-//            try {
-//                if (inp.equalsIgnoreCase("user-count")) {
-//                    System.out.println("> " + RunServer.getClientManager().getSize());
-//                } else if (inp.equalsIgnoreCase("best-user")) {
-//                    showBestPlayerInfo(getBestUser());
-//                } else if (inp.equalsIgnoreCase("shortest-match")) {
-//                    showShortestMatch(getShortestMatch());
-//                } else if (inp.indexOf("block") == 0) {
-//                    System.out.println(blockUser(inp.split(" ")[1]));
-//                } else if (inp.indexOf("log") == 0) {
-//                    showGameMatchDetails(inp.split(" ")[1]);
-//                } else if (inp.equalsIgnoreCase("room-count")) {
-//                    System.out.println("> " + RunServer.getRoomManager().getSize());
-//                } else if (inp.equalsIgnoreCase("shutdown")) {
-//                    System.out.println("shuting down...");
-//                    RunServer.setIsShutDown(true);
-//                }
-//            }catch(ArrayIndexOutOfBoundsException e){
-//                System.out.println("Thiếu tham số !!!");
-//            }
-//
-//            if (inp.equalsIgnoreCase("help")) {
-//                System.out.println("===[List commands]======================\n"
-//                        + "======= Thiết yếu =======\n"
-//                        + "user-count:        số người đang online\n"
-//                        + "best-user:         thông tin user thắng nhiều nhất\n"
-//                        + "shortest-match:    thông tin trận đấu có thời gian ngắn nhất\n"
-//                        + "block <username>: block user có username là <username khỏi hệ thống>\n"
-//                        + "log <match-id>:    xem thông tin trận đấu có mã là <match-id>\n"
-//                        + "======= Thêm =======\n"
-//                        + "room-count: số phòng đang mở\n"
-//                        + "shutdown: tắt server\n"
-//                        + "=======================================");
-//            }
-//        }
     }
 
     public static void openScene(Admin.SceneName sceneName) {
@@ -127,7 +70,7 @@ public class Admin implements Runnable {
             }
         }
     }
-      public static void closeAllScene() {
+    public static void closeAllScene() {
         inGameScene.dispose();
     }
 
@@ -144,11 +87,9 @@ public class Admin implements Runnable {
         }
         return bestPlayer;
     }
-
-    public void showBestPlayerInfo(Player p) {
-        System.out.println("Player with the most win count: "
-                + p.getName() + " - " + p.getUser());
-        System.out.println("Win count: " + p.getWinCount());
+    
+    public int getUserOnline(){
+        return RunServer.getMapClientManager().get(ServerHelper.getKeyServer(server)).getSize();
     }
 
     // Get the match with the shortest play time
@@ -165,16 +106,6 @@ public class Admin implements Runnable {
         return shortestMatch;
     }
 
-    public void showShortestMatch(GameMatch m) {
-        playerBus = new PlayerBUS();
-        Player p1 = new Player(playerBus.getById(m.getPlayerID1()));
-        Player p2 = new Player(playerBus.getById(m.getPlayerID2()));
-        System.out.println("The match with shortest play time: ");
-        System.out.println("Player 1: " + p1.getName());
-        System.out.println("Player 1: " + p2.getName());
-        System.out.println("Play time: " + m.getPlayTime() + " second");
-    }
-
     // Block user with provided user
     public String blockUser(String username) {
         playerBus = new PlayerBUS();
@@ -185,19 +116,6 @@ public class Admin implements Runnable {
             }
         }
         return "Cant find user with provided username!";
-    }
-
-    // Get Game match with provide id
-    public void showGameMatchDetails(String id) {
-        gameMatchBus = new GameMatchBUS();
-        playerBus = new PlayerBUS();
-        GameMatch m = gameMatchBus.getById(Integer.parseInt(id));
-        System.out.println("Match id: " + m.getId());
-        System.out.println("    + Player 1: " + playerBus.getById(m.getPlayerID1()).getName());
-        System.out.println("    + Player 2: " + playerBus.getById(m.getPlayerID2()).getName());
-        System.out.println("    + Winner: " + playerBus.getById(m.getWinnerID()).getName());
-        System.out.println("    + Play time in second: " + m.getPlayTime());
-        System.out.println("    + Total move: " + m.getTotalMove());
     }
 
     public static void main(String[] args) {
@@ -231,8 +149,7 @@ public class Admin implements Runnable {
             vrow.add(clientCount);
             vrow.add("Hóng hớt");
             vdata.add(vrow);
-        }
-
+        }        
         runServer.setListRoom(vdata, vheader, this);
     }
 

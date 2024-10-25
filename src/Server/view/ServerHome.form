@@ -29,12 +29,9 @@
               <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="91" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="btnAddServer" min="-2" pref="174" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="1000" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
+              <EmptySpace pref="99" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="1000" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -43,10 +40,8 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
               <Component id="labelTitle" min="-2" pref="88" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-              <Component id="btnAddServer" min="-2" pref="47" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="516" max="-2" attributes="0"/>
               <EmptySpace pref="77" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -71,8 +66,8 @@
                 <Column editable="true" title="T&#xea;n Server" type="java.lang.String"/>
                 <Column editable="true" title="&#x110;&#x1ecb;a ch&#x1ec9; IP" type="java.lang.String"/>
                 <Column editable="true" title="C&#x1ed5;ng" type="java.lang.Integer"/>
-                <Column editable="true" title="H&#xe0;nh &#x111;&#x1ed9;ng" type="java.lang.String"/>
                 <Column editable="true" title="Tr&#x1ea1;ng th&#xe1;i" type="java.lang.String"/>
+                <Column editable="true" title="H&#xe0;nh &#x111;&#x1ed9;ng" type="java.lang.String"/>
                 <Column editable="true" title="Xem chi ti&#x1ebf;t" type="java.lang.String"/>
               </Table>
             </Property>
@@ -125,25 +120,18 @@
     <Component class="javax.swing.JLabel" name="labelTitle">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="33" type="rgb"/>
+          <Color blue="fa" green="ce" red="87" type="rgb"/>
         </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI Black" size="24" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="C&#x1edd; Caro - Server"/>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
-            <BevelBorder/>
-          </Border>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnAddServer">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Th&#xea;m Server"/>
+        <Property name="text" type="java.lang.String" value="Caro &#x110;&#x1ea1;i Chi&#x1ebf;n - Server"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddServerActionPerformed"/>
+        <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="labelTitleMouseExited"/>
       </Events>
     </Component>
   </SubComponents>

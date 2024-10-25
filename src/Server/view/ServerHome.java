@@ -7,10 +7,15 @@ package server.view;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultCellEditor;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -42,17 +47,25 @@ public class ServerHome extends javax.swing.JFrame {
     private ArrayList<Server> servers;
 
     public ServerHome(ArrayList<Server> servers) {
+        setTitle("Caro Đại Chiến - Server Home");
+           try {
+            URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLw-jhsZE2DjYrRMcg7lXaRnhiYpjwKkRJ2w&s");
+            Image logo = ImageIO.read(url);  
+            setIconImage(logo); 
+        } catch (IOException e) {
+               System.out.println("1");
+        }
         this.servers = servers;
         initComponents();
-
         this.setSize(1200, 800);
         this.setResizable(false);
         this.setLocation(600, 350);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        this.setBackground(new Color(240, 240, 240));
         Font headerFont = new Font("Tahoma", Font.BOLD, 18);
         tableServer.getTableHeader().setFont(headerFont);
-
+        tableServer.getTableHeader().setReorderingAllowed(false);
+        tableServer.getTableHeader().setBackground(new Color(220, 230, 242));
         DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) tableServer.getTableHeader().getDefaultRenderer();
         headerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
@@ -65,18 +78,16 @@ public class ServerHome extends javax.swing.JFrame {
         }
         tableServer.setRowHeight(30);
 
-        labelTitle.setBackground(Color.CYAN); // Màu nền
-        labelTitle.setOpaque(true); // Đặt JLabel thành trong suốt
         labelTitle.setHorizontalAlignment(SwingConstants.CENTER);
-
+        labelTitle.setOpaque(true);
         DefaultTableModel model = (DefaultTableModel) tableServer.getModel();
 
         for (Server server : servers) {
-            model.addRow(new Object[]{server, "1", server.getServerIp(), server.getServerPort(), "Bật/Tắt", server.getStatus(), "2"});
+            model.addRow(new Object[]{server, server.getServerName(), server.getServerIp(), server.getServerPort(), server.getStatus(), "Bật/Tắt", "2"});
         }
 
-        tableServer.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer());
-        tableServer.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(new JCheckBox(), tableServer));
+        tableServer.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
+        tableServer.getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(new JCheckBox(), tableServer));
 
         tableServer.getColumnModel().getColumn(6).setCellRenderer(new DetailButtonRenderer());
         tableServer.getColumnModel().getColumn(6).setCellEditor(new DetailButtonEditor(new JCheckBox(), tableServer));
@@ -99,7 +110,6 @@ public class ServerHome extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableServer = new javax.swing.JTable();
         labelTitle = new javax.swing.JLabel();
-        btnAddServer = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -109,7 +119,7 @@ public class ServerHome extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Server", "Tên Server", "Địa chỉ IP", "Cổng", "Hành động", "Trạng thái", "Xem chi tiết"
+                "Server", "Tên Server", "Địa chỉ IP", "Cổng", "Trạng thái", "Hành động", "Xem chi tiết"
             }
         ) {
             Class[] types = new Class [] {
@@ -122,15 +132,13 @@ public class ServerHome extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tableServer);
 
-        labelTitle.setBackground(new java.awt.Color(51, 255, 255));
+        labelTitle.setBackground(new java.awt.Color(135, 206, 250));
         labelTitle.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
-        labelTitle.setText("Cờ Caro - Server");
-        labelTitle.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        btnAddServer.setText("Thêm Server");
-        btnAddServer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddServerActionPerformed(evt);
+        labelTitle.setForeground(new java.awt.Color(255, 255, 255));
+        labelTitle.setText("Caro Đại Chiến - Server");
+        labelTitle.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                labelTitleMouseExited(evt);
             }
         });
 
@@ -143,30 +151,26 @@ public class ServerHome extends javax.swing.JFrame {
                 .addComponent(labelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 559, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(91, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnAddServer, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1000, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(90, 90, 90))
+                .addContainerGap(99, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1000, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(82, 82, 82))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addComponent(labelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(btnAddServer, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(77, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddServerActionPerformed
+    private void labelTitleMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelTitleMouseExited
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddServerActionPerformed
+    }//GEN-LAST:event_labelTitleMouseExited
 
     /**
      * @param args the command line arguments
@@ -204,7 +208,6 @@ public class ServerHome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddServer;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelTitle;
     private javax.swing.JTable tableServer;
@@ -225,12 +228,12 @@ class ButtonEditor extends DefaultCellEditor {
         super(checkBox);
         this.table = table;
         button = new JButton();
-        button.setOpaque(true);
-
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ServerDAL serverDAL = new ServerDAL();
                 currentServer = serverDAL.getServerById(serverId);
+                button.setBackground(new Color(135, 206, 250));
+                // button.setForeground(Color.WHITE);
                 if (currentServer.getStatus().equals("Tắt")) {
                     updateTableStatus("Bật");
                     serverDAL.updateServerStatus(currentServer.getId(), "Bật");
@@ -253,7 +256,7 @@ class ButtonEditor extends DefaultCellEditor {
     private void updateTableStatus(String status) {
         int row = table.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setValueAt(status, row, 5);
+        model.setValueAt(status, row, 4);
         SwingUtilities.invokeLater(() -> table.repaint());
     }
 
@@ -288,8 +291,11 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
-        String status = (String) table.getValueAt(row, 4);
+        String status = (String) table.getValueAt(row, 5);
         setText(status);
+        setForeground(Color.WHITE);
+        setFont(new Font("Tahoma", Font.BOLD, 16));
+        setBackground(new Color(135, 206, 250)); // Màu mặc định là xanh dương nhạt
         return this;
     }
 }
@@ -303,6 +309,9 @@ class DetailButtonRenderer extends JButton implements TableCellRenderer {
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         setText("Xem chi tiết");
+        setForeground(Color.WHITE);
+        setFont(new Font("Tahoma", Font.BOLD, 16));
+        setBackground(new Color(135, 206, 250)); // Màu mặc định là xanh dương nhạt
         return this;
     }
 }
@@ -322,6 +331,7 @@ class DetailButtonEditor extends DefaultCellEditor {
 
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
                 serverId = ((Server) table.getValueAt(table.getSelectedRow(), 0)).getId();
                 // Open a new window or display details about the selected server.
                 openServerDetails(serverId);
@@ -332,6 +342,7 @@ class DetailButtonEditor extends DefaultCellEditor {
 
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+
         return button;
     }
 
@@ -350,7 +361,6 @@ class DetailButtonEditor extends DefaultCellEditor {
         super.fireEditingStopped();
     }
 
-    // Method to open the details window
     private void openServerDetails(int serverId) {
         // This method should open a new window or dialog showing server details
         Server server = new ServerDAL().getServerById(serverId);

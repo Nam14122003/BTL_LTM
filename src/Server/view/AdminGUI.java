@@ -4,7 +4,6 @@
  */
 package server.view;
 
-import client.RunClient;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.*;
@@ -12,15 +11,17 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Vector;
+import javax.imageio.ImageIO;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
-import server.RunServer;
+import javax.swing.table.TableColumnModel;
 import server.controller.Admin;
 import static server.controller.Admin.joinRoom;
-import server.db.layers.dal.ServerDAL;
 import server.db.layers.dto.GameMatch;
 import server.db.layers.dto.Player;
-import server.db.layers.dto.Server;
 
 /**
  *
@@ -38,11 +39,33 @@ public class AdminGUI extends javax.swing.JFrame {
 
     public AdminGUI(Admin admin) {
 
-        setTitle("Admin Control Panel");
-        setSize(800, 600);
-        setLayout(null);
+        setTitle("Caro Đại Chiến - Quản lý server");
+        try {
+            URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLw-jhsZE2DjYrRMcg7lXaRnhiYpjwKkRJ2w&s");
+            Image logo = ImageIO.read(url);
+            setIconImage(logo);
+        } catch (IOException e) {
+            System.out.println("Không thể tải logo.");
+        }
+        this.setBackground(new Color(240, 240, 240));
+        this.setSize(1200, 800);
+        this.setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+
+        setLayout(new BorderLayout());
+
+        JLabel titleLabel = new JLabel("Server " + admin.server.getServerName(), JLabel.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+
+        titleLabel.setPreferredSize(new Dimension(204, 40));
+
+        titleLabel.setOpaque(true);
+        titleLabel.setBackground(new Color(135, 206, 250)); // Light blue background
+        titleLabel.setForeground(Color.WHITE); // White text color
+
+        add(titleLabel, BorderLayout.NORTH);
+
         // Tạo bảng hiển thị các cặp đấu
         String[] columns = {"Cặp đấu", "Player 1", "Player 2", "Thời gian(s)", "Xem trực tiếp"};
         Object[][] data = {
@@ -51,42 +74,78 @@ public class AdminGUI extends javax.swing.JFrame {
             {"3", "linda", "thanh3", "170", "Xem"},
             {"4", "peter", "thanh4", "170", "Xem"},
             {"5", "lan", "thanh5", "170", "Xem"},
-            {"6", "nam", "thanh6", "170", "Xem"},};
+            {"6", "nam", "thanh6", "170", "Xem"}
+        };
 
         DefaultTableModel model = new DefaultTableModel(data, columns);
         matchTable = new JTable(model);
         matchTable.setRowHeight(30);
 
+        // Tùy chỉnh header của bảng
+        Font headerFont = new Font("Tahoma", Font.BOLD, 18);
+        matchTable.getTableHeader().setFont(headerFont);
+        matchTable.getTableHeader().setReorderingAllowed(false);
+        matchTable.getTableHeader().setBackground(new Color(220, 230, 242));
+        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) matchTable.getTableHeader().getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
         JScrollPane scrollPane = new JScrollPane(matchTable);
-        scrollPane.setBounds(50, 50, 700, 200);
-        add(scrollPane);
+        add(scrollPane, BorderLayout.CENTER);
 
-        // Các nút chức năng admin
+        // Tạo panel chứa các nút chức năng
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10); // Padding giữa các nút
+
+        Font buttonFont = new Font("Tahoma", Font.PLAIN, 16);
+
+        // Nút Số người online
         btnUserCount = new JButton("Số người online");
-        btnUserCount.setBounds(50, 270, 150, 30);
-        add(btnUserCount);
+        btnUserCount.setFont(buttonFont);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        buttonPanel.add(btnUserCount, gbc);
 
+        // Nút User thắng nhiều nhất
         btnBestUser = new JButton("User thắng nhiều nhất");
-        btnBestUser.setBounds(220, 270, 150, 30);
-        add(btnBestUser);
+        btnBestUser.setFont(buttonFont);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        buttonPanel.add(btnBestUser, gbc);
 
+        // Nút Trận đấu ngắn nhất
         btnShortestMatch = new JButton("Trận đấu ngắn nhất");
-        btnShortestMatch.setBounds(390, 270, 150, 30);
-        add(btnShortestMatch);
+        btnShortestMatch.setFont(buttonFont);
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        buttonPanel.add(btnShortestMatch, gbc);
 
+        // Nút Khóa người dùng
         btnBlockUser = new JButton("Khóa người dùng");
-        btnBlockUser.setBounds(560, 270, 150, 30);
-        add(btnBlockUser);
+        btnBlockUser.setFont(buttonFont);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        buttonPanel.add(btnBlockUser, gbc);
 
+        // Nút Refresh
         btnRefresh = new JButton("Refresh");
-        btnRefresh.setBounds(50, 320, 150, 30);
-        add(btnRefresh);
+        btnRefresh.setFont(buttonFont);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        buttonPanel.add(btnRefresh, gbc);
 
         // Nút Trở về
         btnBack = new JButton("Trở về");
-        btnBack.setBounds(50, 370, 150, 30);
-        add(btnBack);
+        btnBack.setFont(buttonFont);
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        buttonPanel.add(btnBack, gbc);
 
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        // Sự kiện các nút
         btnBestUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -114,26 +173,43 @@ public class AdminGUI extends javax.swing.JFrame {
                 blockUserPrompt(admin);
             }
         });
+        
+        btnUserCount.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showUserCount(admin);
+            }
+        });
 
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Xử lý quay về màn hình chính hoặc thoát
                 dispose(); // Đóng cửa sổ hiện tại
             }
         });
-        //   setVisible(true);
+
+        setVisible(true);
     }
 
-    // Phương thức xử lý số người online
-//    private void showUserCount(Admin admin) {
-//        // Gọi phương thức hiển thị số người online
-//        System.out.println("Số người dùng đang online: " + RunServer.getClientManager().getSize());
-//    }
+
+    private void showUserCount(Admin admin) {
+        JOptionPane.showMessageDialog(this, "Số người dùng đang online: " + admin.getUserOnline());
+    }
+
     public void setListRoom(Vector vdata, Vector vheader, Admin admin) {
         matchTable.setModel(new DefaultTableModel(vdata, vheader));
         matchTable.getColumnModel().getColumn(3).setCellRenderer(new ButtonRendererAdmin());
         matchTable.getColumnModel().getColumn(3).setCellEditor(new ButtonEditorAdmin(new JCheckBox(), matchTable, admin));
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        TableColumnModel columnModel = matchTable.getColumnModel();
+
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            if (i != 3) {
+                columnModel.getColumn(i).setCellRenderer(centerRenderer);
+            }
+        }
     }
 
     private void showBestUser(Admin admin) {
@@ -238,13 +314,15 @@ class ButtonEditorAdmin extends DefaultCellEditor {
 
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                 int column = 0;
-                 int row = table.getSelectedRow();
+                int column = 0;
+                int row = table.getSelectedRow();
                 if (row >= 0) {
-                  String roomId = table.getModel().getValueAt(row, column).toString();
-                     admin.joinRoom.watchRoom(roomId);
-        
-                 }  
+                    String roomId = table.getModel().getValueAt(row, column).toString();
+                    admin.joinRoom.connect(admin.server.getServerIp(), admin.server.getServerPort());
+                    admin.joinRoom.login("admin1", "Bcvt.son2003");
+                    admin.joinRoom.watchRoom(roomId);
+
+                }
                 fireEditingStopped();
             }
         });
@@ -279,7 +357,9 @@ class ButtonRendererAdmin extends JButton implements TableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-
+        setForeground(Color.WHITE);
+        setFont(new Font("Tahoma", Font.BOLD, 16));
+        setBackground(new Color(135, 206, 250)); // Màu mặc định là xanh dương nhạt
         setText("Hóng hớt");
         return this;
     }

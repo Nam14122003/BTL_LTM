@@ -328,8 +328,6 @@ public class InGameAdmin extends javax.swing.JFrame {
 
         plRightContainer = new javax.swing.JPanel();
         plToolContainer = new javax.swing.JPanel();
-        btnNewGame = new javax.swing.JButton();
-        btnUndo = new javax.swing.JButton();
         btnLeaveRoom = new javax.swing.JButton();
         plPlayerContainer = new javax.swing.JPanel();
         plPlayer = new javax.swing.JPanel();
@@ -365,14 +363,6 @@ public class InGameAdmin extends javax.swing.JFrame {
 
         plToolContainer.setBorder(javax.swing.BorderFactory.createTitledBorder("Chức năng"));
 
-        btnNewGame.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        btnNewGame.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_new_file_24px.png"))); // NOI18N
-        btnNewGame.setText("Ván mới");
-
-        btnUndo.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        btnUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_undo_24px.png"))); // NOI18N
-        btnUndo.setText("Đánh lại");
-
         btnLeaveRoom.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         btnLeaveRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_exit_sign_24px.png"))); // NOI18N
         btnLeaveRoom.setText("Thoát phòng");
@@ -388,24 +378,15 @@ public class InGameAdmin extends javax.swing.JFrame {
             plToolContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, plToolContainerLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(plToolContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addGroup(plToolContainerLayout.createSequentialGroup()
-                        .addComponent(btnNewGame)
-                        .addGap(6, 6, 6)
-                        .addComponent(btnUndo))
-                    .addComponent(btnLeaveRoom))
-                .addGap(42, 42, 42))
+                .addComponent(btnLeaveRoom)
+                .addContainerGap())
         );
         plToolContainerLayout.setVerticalGroup(
             plToolContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, plToolContainerLayout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
-                .addGroup(plToolContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNewGame)
-                    .addComponent(btnUndo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(plToolContainerLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(btnLeaveRoom)
-                .addGap(18, 18, 18))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         plPlayer.setBorder(javax.swing.BorderFactory.createTitledBorder("Người chơi"));
@@ -646,8 +627,9 @@ public class InGameAdmin extends javax.swing.JFrame {
         plRightContainerLayout.setVerticalGroup(
             plRightContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, plRightContainerLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(plToolContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(56, 56, 56)
                 .addComponent(plPlayerContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tpChatAndViewerContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -752,9 +734,7 @@ public class InGameAdmin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLeaveRoom;
-    private javax.swing.JButton btnNewGame;
     private javax.swing.JButton btnSendMessage;
-    private javax.swing.JButton btnUndo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
