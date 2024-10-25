@@ -6,39 +6,56 @@ import java.awt.*;
 import java.util.List;
 
 public class GameMatchTable {
-
+    private server.db.layers.bus.PlayerBUS playerBUS;
     public void addGameMatchesToPanel(JPanel jPanel3, List<server.db.layers.dto.GameMatch> matchList) {
         // Cột tiêu đề cho bảng
         String[] columnNames = {
-                "Match ID", "Player 1 ID", "Player 2 ID", "Winner ID",
-                "Play Time", "Total Moves", "Started Time", "Chat"
+                "Match ID", "Player 1", "Player 2", "Winner", "Started Time"
         };
 
         // Dữ liệu cho bảng
-        Object[][] data = new Object[matchList.size()][8]; // 8 cột tương ứng với các thuộc tính
-
+        playerBUS = new server.db.layers.bus.PlayerBUS();
+        Object[][] data = new Object[matchList.size()][5]; // 5 cột
         for (int i = 0; i < matchList.size(); i++) {
             server.db.layers.dto.GameMatch match = matchList.get(i);
             data[i][0] = match.getId();
-            data[i][1] = match.getPlayerID1();
-            data[i][2] = match.getPlayerID2();
-            data[i][3] = match.getWinnerID();
-            data[i][4] = match.getPlayTime();
-            data[i][5] = match.getTotalMove();
-            data[i][6] = match.getStartedTime(); // Đảm bảo định dạng thời gian phù hợp
-            data[i][7] = match.getChat(); // Nếu có
+            int Id1 = match.getPlayerID1();
+            data[i][1] = playerBUS.getById(Id1).getName();
+            int Id2 = match.getPlayerID2();
+            data[i][2] = playerBUS.getById(Id2).getName();
+            int winnerId = match.getWinnerID();
+            if (playerBUS.getById(winnerId) == null) {
+                data[i][3] = "No winner";
+            } else {
+                data[i][3] = playerBUS.getById(winnerId).getName();
+            }
+            data[i][4] = match.getStartedTime();
         }
 
         // Tạo model cho bảng
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
         JTable table = new JTable(model);
-        JScrollPane jScrollPane2 = new JScrollPane(table); // Bọc JTable trong JScrollPane
 
-        // Thiết lập bố cục cho jPanel3
-        jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.Y_AXIS)); // Bố cục theo chiều dọc
+        // Thiết lập cỡ chữ cho bảng
+        table.setFont(new Font("Dialog", Font.PLAIN, 16));
+        table.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 18));
+        table.setIntercellSpacing(new Dimension(10, 5));
+        table.setRowHeight(30); // Chiều cao hàng
+        table.setShowGrid(true);
+        table.setGridColor(Color.BLACK);
 
-        // Thêm JScrollPane vào jPanel3
-        jPanel3.add(jScrollPane2); // Thêm JScrollPane chứa JTable
-        jPanel3.add(Box.createRigidArea(new Dimension(0, 5))); // Khoảng cách giữa JScrollPane và các thành phần khác
+        // Tạo JScrollPane
+        JScrollPane jScrollPane2 = new JScrollPane(table);
+        jScrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); // Cung cấp thanh cuộn khi cần
+        jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); // Cung cấp thanh cuộn khi cần
+
+        // Thiết lập bố cục cho JPanel
+        jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.Y_AXIS)); // Bố cục dọc
+        jPanel3.add(jScrollPane2); // Thêm JScrollPane vào JPanel
+        jPanel3.add(Box.createRigidArea(new Dimension(0, 5))); // Khoảng cách
+        jPanel3.revalidate(); // Cập nhật layout
+        jPanel3.repaint(); // Vẽ lại JPanel
     }
+
+
 }
