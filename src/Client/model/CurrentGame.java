@@ -13,12 +13,12 @@ import java.util.ArrayList;
  */
 public class CurrentGame {
 
-    ArrayList<ProfileData> listViewer;
-    ProfileData player1;
-    ProfileData player2;
-    boolean player1Turn;
+    private ArrayList<ProfileData> listViewer;
+    private ProfileData player1;
+    private ProfileData player2;
+    private boolean player1Turn;
 
-    int[][] listCell;
+    private int[][] listCell;
 
     public CurrentGame() {
 

@@ -1,4 +1,4 @@
-package Client.view.asset;
+package client.view.asset;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

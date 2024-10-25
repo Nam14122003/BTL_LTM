@@ -77,8 +77,18 @@ REPLACE INTO `player` (`ID`, `Username`, `Password`, `Avatar`, `Name`, `Gender`,
 	(9, 'superman', 'e10adc3949ba59abbe56e057f20f883e', 'icons8_circled_user_male_skin_type_7_96px.png', 'man', 'Nam', 2000, 0, 0, 0, 0, 0, 0, 0, 0),
 	(10, 'yes', 'e10adc3949ba59abbe56e057f20f883e', 'icons8_circled_user_male_skin_type_7_96px.png', 'nonono', 'Nam', 1987, 0, 0, 0, 0, 0, 0, 0, 0);
 
-/*!40000 ALTER TABLE `player` ENABLE KEYS */;
 
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
+CREATE TABLE `carodb`.`servers` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `server_name` VARCHAR(255) NOT NULL,
+  `server_ip` VARCHAR(255) NOT NULL,
+  `server_port` INT NOT NULL,
+  PRIMARY KEY (`id`));
+ALTER TABLE `carodb`.`servers` 
+ADD COLUMN `status` VARCHAR(45) NOT NULL AFTER `server_port`;
+
+INSERT INTO servers(server_name, server_ip, server_port, status) VALUES('Trái Đất','127.0.0.1',3456,'Tắt');
+INSERT INTO servers(server_name, server_ip, server_port, status) VALUES('Sao Hỏa','26.30.30.53',3456,'Tắt');
+INSERT INTO servers(server_name, server_ip, server_port, status) VALUES('Mặt Trời','127.0.0.1',5056,'Tắt');
+INSERT INTO servers(server_name, server_ip, server_port, status) VALUES('Mặt Trăng','127.0.0.1',5055,'Tắt');

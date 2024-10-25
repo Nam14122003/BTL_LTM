@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package server.db.layers.DBConnector;
+package server.db.layers.dbconnector;
 
 import java.sql.PreparedStatement;
 import java.sql.Connection;
@@ -19,10 +19,10 @@ public class MysqlConnector {
 
     Connection conn = null;
 
-    String server = "localhost:3307";
+    String server = "localhost:3306";
     String db = "carodb";
     String user = "root";
-    String pass = "";
+    String pass = "123456";
 
     public MysqlConnector() {
         checkDriver();

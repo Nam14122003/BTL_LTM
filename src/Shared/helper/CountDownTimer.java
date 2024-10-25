@@ -20,11 +20,11 @@ import server.game.caro.Caro;
  */
 public class CountDownTimer {
 
-    int timeLimit;
-    int currentTick;
-    int tickInterval;
-    Timer timer;
-    ExecutorService executor;
+    private int timeLimit;
+    private int currentTick;
+    private int tickInterval;
+    private Timer timer;
+    private ExecutorService executor;
 
     boolean isPaused = false;
 

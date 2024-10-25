@@ -5,78 +5,77 @@
  */
 package server.controller;
 
-import java.io.IOException;
+import client.view.helper.LookAndFeel;
+import java.util.ArrayList;
+import java.util.Vector;
 import server.RunServer;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import server.db.layers.BUS.GameMatchBUS;
-import server.db.layers.BUS.PlayerBUS;
-import server.db.layers.DTO.GameMatch;
-import server.db.layers.DTO.Player;
+import server.db.layers.bus.GameMatchBUS;
+import server.db.layers.bus.PlayerBUS;
+import server.db.layers.dal.ServerDAL;
+import server.db.layers.dto.GameMatch;
+import server.db.layers.dto.Player;
+import server.db.layers.dto.Server;
+import server.view.AdminGUI;
+import server.view.InGameAdmin;
+import shared.helper.ServerHelper;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class Admin implements Runnable {
 
+    public enum SceneName {
+        INGAME
+    }
     GameMatchBUS gameMatchBus;
     PlayerBUS playerBus;
+    public Server server;
+    public static AdminGUI runServer;
+    public static InGameAdmin inGameScene;
+    public static JoinRoom joinRoom;
+
+    public Admin(Server server) {
+        LookAndFeel.setNimbusLookAndFeel();
+        this.server = server;
+        inGameScene = new InGameAdmin();
+        joinRoom = new JoinRoom();
+    }
 
     @Override
     public void run() {
-        Scanner s = new Scanner(System.in);
-        String inp;
+        ServerDAL serverDAL = new ServerDAL();
+        runServer = new AdminGUI(this);
+        runServer.setVisible(true);
+        onReceiveListRoom();
+    }
 
-        while (!RunServer.isShutDown) {
-            System.out.print("AdminCommand> ");
-            inp = s.nextLine();
-            try {
-                if (inp.equalsIgnoreCase("user-count")) {
-                    System.out.println("> " + RunServer.clientManager.getSize());
-                } else if (inp.equalsIgnoreCase("best-user")) {
-                    showBestPlayerInfo(getBestUser());
-                } else if (inp.equalsIgnoreCase("shortest-match")) {
-                    showShortestMatch(getShortestMatch());
-                } else if (inp.indexOf("block") == 0) {
-                    System.out.println(blockUser(inp.split(" ")[1]));
-                } else if (inp.indexOf("log") == 0) {
-                    showGameMatchDetails(inp.split(" ")[1]);
-                } else if (inp.equalsIgnoreCase("room-count")) {
-                    System.out.println("> " + RunServer.roomManager.getSize());
-                } else if (inp.equalsIgnoreCase("shutdown")) {
-                    System.out.println("shuting down...");
-                    RunServer.isShutDown = true;
-
-                    try {
-                        RunServer.ss.close();
-                    } catch (IOException ex) {
-                        Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }catch(ArrayIndexOutOfBoundsException e){
-                System.out.println("Thiếu tham số !!!");
-            }
-
-            if (inp.equalsIgnoreCase("help")) {
-                System.out.println("===[List commands]======================\n"
-                        + "======= Thiết yếu =======\n"
-                        + "user-count:        số người đang online\n"
-                        + "best-user:         thông tin user thắng nhiều nhất\n"
-                        + "shortest-match:    thông tin trận đấu có thời gian ngắn nhất\n"
-                        + "block <username>: block user có username là <username khỏi hệ thống>\n"
-                        + "log <match-id>:    xem thông tin trận đấu có mã là <match-id>\n"
-                        + "======= Thêm =======\n"
-                        + "room-count: số phòng đang mở\n"
-                        + "shutdown: tắt server\n"
-                        + "=======================================");
+    public static void openScene(Admin.SceneName sceneName) {
+        if (null != sceneName) {
+            switch (sceneName) {
+                case INGAME:
+                    inGameScene = new InGameAdmin();
+                    inGameScene.setVisible(true);
+                    break;
+                default:
+                    break;
             }
         }
     }
 
+    public static void closeScene(Admin.SceneName sceneName) {
+        if (null != sceneName) {
+            switch (sceneName) {
+                case INGAME:
+                    inGameScene.dispose();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    public static void closeAllScene() {
+        inGameScene.dispose();
+    }
+
     // Get player with the most win count
-    private Player getBestUser() {
+    public Player getBestUser() {
         Player bestPlayer = null;
         playerBus = new PlayerBUS();
         int max = 0;
@@ -88,11 +87,9 @@ public class Admin implements Runnable {
         }
         return bestPlayer;
     }
-
-    private void showBestPlayerInfo(Player p) {
-        System.out.println("Player with the most win count: "
-                + p.getName() + " - " + p.getUser());
-        System.out.println("Win count: " + p.getWinCount());
+    
+    public int getUserOnline(){
+        return RunServer.getMapClientManager().get(ServerHelper.getKeyServer(server)).getSize();
     }
 
     // Get the match with the shortest play time
@@ -109,18 +106,8 @@ public class Admin implements Runnable {
         return shortestMatch;
     }
 
-    private void showShortestMatch(GameMatch m) {
-        playerBus = new PlayerBUS();
-        Player p1 = new Player(playerBus.getById(m.getPlayerID1()));
-        Player p2 = new Player(playerBus.getById(m.getPlayerID2()));
-        System.out.println("The match with shortest play time: ");
-        System.out.println("Player 1: " + p1.getName());
-        System.out.println("Player 1: " + p2.getName());
-        System.out.println("Play time: " + m.getPlayTime() + " second");
-    }
-
     // Block user with provided user
-    private String blockUser(String username) {
+    public String blockUser(String username) {
         playerBus = new PlayerBUS();
         for (Player p : playerBus.getList()) {
             if (p.getUser().equalsIgnoreCase(username)) {
@@ -131,21 +118,39 @@ public class Admin implements Runnable {
         return "Cant find user with provided username!";
     }
 
-    // Get Game match with provide id
-    private void showGameMatchDetails(String id) {
-        gameMatchBus = new GameMatchBUS();
-        playerBus = new PlayerBUS();
-        GameMatch m = gameMatchBus.getById(Integer.parseInt(id));
-        System.out.println("Match id: " + m.getId());
-        System.out.println("    + Player 1: " + playerBus.getById(m.getPlayerID1()).getName());
-        System.out.println("    + Player 2: " + playerBus.getById(m.getPlayerID2()).getName());
-        System.out.println("    + Winner: " + playerBus.getById(m.getWinnerID()).getName());
-        System.out.println("    + Play time in second: " + m.getPlayTime());
-        System.out.println("    + Total move: " + m.getTotalMove());
+    public static void main(String[] args) {
+        System.out.println("1");
     }
 
-    public static void main(String[] args) {
-        Admin ad = new Admin();
-        ad.run();
+    public void onReceiveListRoom() {
+        ArrayList<Room> listRoom = RunServer.getMapRoomManager().get(ServerHelper.getKeyServer(server)).getRooms();
+        int roomCount = listRoom.size();
+
+        Vector vheader = new Vector();
+        vheader.add("Mã");
+        vheader.add("Cặp đấu");
+        vheader.add("Số người");
+        vheader.add("Hành động");
+
+        Vector vdata = new Vector();
+
+        for (Room room : listRoom) {
+            String pairData
+                    = ((room.getClient1() != null) ? room.getClient1().getLoginPlayer().getNameId() : "_")
+                    + " VS "
+                    + ((room.getClient2() != null) ? room.getClient2().getLoginPlayer().getNameId() : "_");
+            String roomId = room.id;
+            String title = pairData;
+            int clientCount = room.clients.size();
+
+            Vector vrow = new Vector();
+            vrow.add(roomId);
+            vrow.add(title);
+            vrow.add(clientCount);
+            vrow.add("Hóng hớt");
+            vdata.add(vrow);
+        }        
+        runServer.setListRoom(vdata, vheader, this);
     }
+
 }

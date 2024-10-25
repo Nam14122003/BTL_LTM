@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package server.db.layers.BUS;
+package server.db.layers.bus;
 
-import server.db.layers.DAL.PlayerDAL;
-import server.db.layers.DTO.Player;
+import server.db.layers.dal.PlayerDAL;
+import server.db.layers.dto.Player;
 import java.util.ArrayList;
 import shared.constant.Code;
 
@@ -16,8 +16,8 @@ import shared.constant.Code;
  */
 public class PlayerBUS {
 
-    ArrayList<Player> listPlayer = new ArrayList<>();
-    PlayerDAL playerDAL = new PlayerDAL();
+    private ArrayList<Player> listPlayer = new ArrayList<>();
+    private PlayerDAL playerDAL = new PlayerDAL();
 
     public PlayerBUS() {
         readDB();

@@ -12,10 +12,12 @@ import server.game.GameLogic;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 import server.RunServer;
-import server.db.layers.BUS.GameMatchBUS;
-import server.db.layers.DTO.GameMatch;
+import server.db.layers.bus.GameMatchBUS;
+import server.db.layers.dto.GameMatch;
+import server.db.layers.dto.Server;
 import server.game.caro.History;
 import shared.constant.StreamData;
+import shared.helper.ServerHelper;
 
 /**
  *
@@ -72,14 +74,12 @@ public class Room {
                 );
 
         gamelogic.getMatchTimer()
-                .setTimerCallBack(
-                        // end match callback
-                        (Callable) () -> {
+                .setTimerCallBack((Callable) () -> {
 
                             // tinh diem hoa
-                            server.db.layers.BUS.PlayerBUS bus = new server.db.layers.BUS.PlayerBUS();
-                            server.db.layers.DTO.Player winner = client1.getLoginPlayer();
-                            server.db.layers.DTO.Player loser = client2.getLoginPlayer();
+                            server.db.layers.bus.PlayerBUS bus = new server.db.layers.bus.PlayerBUS();
+                            server.db.layers.dto.Player winner = client1.getLoginPlayer();
+                            server.db.layers.dto.Player loser = client2.getLoginPlayer();
                             winner.addScore(0.5);
                             loser.addScore(0.5);
                             winner.setDrawCount(winner.getDrawCount()+1);
@@ -152,7 +152,7 @@ public class Room {
         });
     }
 
-    public void close(String reason) {
+    public void close(Server server, String reason) {
         // notify all client in room
         broadcast(StreamData.Type.CLOSE_ROOM.name() + ";" + reason);
 
@@ -165,7 +165,7 @@ public class Room {
         clients.clear();
 
         // remove room
-        RunServer.roomManager.remove(this);
+        RunServer.getMapRoomManager().get(ServerHelper.getKeyServer(server)).remove(this);
     }
 
     // get room data

@@ -1,12 +1,13 @@
-package Client.view.scene;
+package client.view.scene;
 
-import server.db.layers.BUS.PlayerBUS;
+import server.db.layers.bus.PlayerBUS;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.*;
 import java.util.Vector;
+import server.db.layers.bus.PlayerBUS;
 
 public class RankingApp extends JFrame {
     private JTable rankingTable;
@@ -14,7 +15,7 @@ public class RankingApp extends JFrame {
     private String currentUsername;  // Tên người đăng nhập
     private JLabel lblUserRank;  // Nhãn hiển thị thứ hạng người dùng hiện tại
     private JPanel panelUserInfo; // Panel để hiển thị thông tin cá nhân người dùng
-    private server.db.layers.BUS.PlayerBUS playerBus;
+    private PlayerBUS playerBus;
     public RankingApp(String currentUsername) {
         this.currentUsername = currentUsername;  // Lưu tên người đăng nhập
 
@@ -55,11 +56,10 @@ public class RankingApp extends JFrame {
     // Hàm tải dữ liệu bảng xếp hạng từ cơ sở dữ liệu
     private void loadRankingData() {
         try {
-            playerBus= new PlayerBUS();
+             playerBus= new PlayerBUS();
             // Kết nối với cơ sở dữ liệu MySQL
             Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3307/carodb", "root", "");
-
+                    "jdbc:mysql://localhost:3306/carodb", "root", "123456");
             // Truy vấn dữ liệu từ bảng Player
             String query = "SELECT ID, Score, MatchCount, WinCount,DrawCount, LoseCount FROM Player ORDER BY Score DESC";
             PreparedStatement stmt = connection.prepareStatement(query);

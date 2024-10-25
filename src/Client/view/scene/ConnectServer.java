@@ -5,13 +5,15 @@
  */
 package client.view.scene;
 
-import static Shared.constant.Server.SERVER_HOST;
-import static Shared.constant.Server.SERVER_PORT_1;
-import static Shared.constant.Server.SERVER_PORT_2;
-import static Shared.constant.Server.SERVER_PORT_3;
-import static Shared.constant.Server.SERVER_PORT_4;
+import static shared.constant.Server.*;
 import client.RunClient;
+import java.awt.Image;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -19,15 +21,40 @@ import javax.swing.JOptionPane;
  */
 public class ConnectServer extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ChooseServer
-     */
     public ConnectServer() {
+        try {
+            URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLw-jhsZE2DjYrRMcg7lXaRnhiYpjwKkRJ2w&s");
+            Image logo = ImageIO.read(url);
+            setIconImage(logo);
+        } catch (IOException e) {
+            System.out.println("1");
+        }
         initComponents();
         this.setLocationRelativeTo(null);
-
-        // default is hidden
+        jLabel2.setOpaque(true);
+        
         pgbLoading.setVisible(false);
+        getContentPane().setBackground(new java.awt.Color(240, 240, 240));
+        selectServer.setBackground(new java.awt.Color(255, 255, 255)); // Màu nền trắng
+        selectServer.setForeground(new java.awt.Color(51, 51, 51));    // Màu chữ xám đậm
+        selectServer.setFont(new java.awt.Font("Segoe UI", 0, 18));     // Font chữ "Segoe UI" cỡ 18
+        selectServer.setPreferredSize(new java.awt.Dimension(500, 40)); // Chiều rộng và cao của combo box
+        DefaultListCellRenderer listRenderer = new DefaultListCellRenderer();
+        listRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        selectServer.setRenderer(listRenderer);
+
+        btnConnect.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnConnect.setBackground(new java.awt.Color(255, 255, 255));
+                btnConnect.setForeground(new java.awt.Color(135, 206, 250));
+                // Chuyển màu khi di chuột
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnConnect.setBackground(new java.awt.Color(135, 206, 250));
+                btnConnect.setForeground(new java.awt.Color(255, 255, 255));
+            }
+        });
     }
 
     public void setLoading(boolean isLoading, String btnText) {
@@ -49,14 +76,21 @@ public class ConnectServer extends javax.swing.JFrame {
         btnConnect = new javax.swing.JButton();
         pgbLoading = new javax.swing.JProgressBar();
         selectServer = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Kết nối");
+        setBackground(new java.awt.Color(255, 255, 255));
 
+        jLabel2.setBackground(new java.awt.Color(135, 206, 250));
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel2.setText("KẾT NỐI SERVER");
+        jLabel2.setForeground(new java.awt.Color(240, 240, 240));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText(" CARO ĐẠI CHIẾN");
 
+        btnConnect.setBackground(new java.awt.Color(135, 206, 250));
         btnConnect.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        btnConnect.setForeground(new java.awt.Color(255, 255, 255));
         btnConnect.setText("Kết nối");
         btnConnect.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnConnect.addActionListener(new java.awt.event.ActionListener() {
@@ -67,7 +101,11 @@ public class ConnectServer extends javax.swing.JFrame {
 
         pgbLoading.setIndeterminate(true);
 
-        selectServer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Server 1", "Server 2", "Server 3", "Server 4" }));
+        selectServer.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
+        selectServer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trái Đất", "Sao Hỏa", "Mặt Trời", "Mặt Trăng" }));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jLabel1.setText("Chọn máy chủ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -75,61 +113,70 @@ public class ConnectServer extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(229, 229, 229)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(pgbLoading, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnConnect, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(selectServer, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnConnect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pgbLoading, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE))))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(selectServer, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 699, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
+                .addGap(8, 8, 8)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(selectServer, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 219, Short.MAX_VALUE)
+                .addComponent(pgbLoading, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(selectServer, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
-                .addComponent(pgbLoading, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnConnect, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(44, 44, 44))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
-        String ip = SERVER_HOST;;
+        String ip;
         int port;
-        
+
         String selectedItem = (String) selectServer.getSelectedItem();
         System.out.println("Server đã chọn: " + selectedItem);
-        
+
         switch (selectedItem) {
-            case "Server 1":
-                port = SERVER_PORT_1;
+            case "Trái Đất":
+                port = PORT_TRAI_DAT;
+                ip = SERVER_TRAI_DAT;
                 break;
-            case "Server 2":
-                port = SERVER_PORT_2;
+            case "Sao Hỏa":
+                port = PORT_SAO_HOA;
+                ip = SERVER_SAO_HOA;
                 break;
-            case "Server 3":
-                port = SERVER_PORT_3;
+            case "Mặt Trời":
+                port = PORT_MAT_TROI;
+                ip = SERVER_MAT_TROI;
                 break;
-            case "Server 4":
-                port = SERVER_PORT_4;
+            case "Mặt Trăng":
+                port = PORT_MAT_TRANG;
+                ip = SERVER_MAT_TRANG;
                 break;
             default:
-                port = SERVER_PORT_1;
+                port = PORT_TRAI_DAT;
+                ip = SERVER_TRAI_DAT;
                 break;
         }
+        System.out.println(port);
 
         connect(ip, port);
     }//GEN-LAST:event_btnConnectActionPerformed
@@ -207,6 +254,7 @@ public class ConnectServer extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConnect;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JProgressBar pgbLoading;
     private javax.swing.JComboBox<String> selectServer;

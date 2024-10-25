@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package server.db.layers.DAL;
+package server.db.layers.dal;
 
-import server.db.layers.DBConnector.MysqlConnector;
-import server.db.layers.DTO.Player;
+import server.db.layers.dbconnector.MysqlConnector;
+import server.db.layers.dto.Player;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +31,7 @@ public class PlayerDAL {
         connector = new MysqlConnector();
 
         try {
-            String qry = "SELECT * FROM Player;";
+            String qry = "SELECT * FROM player;";
             PreparedStatement stm = connector.getConnection().prepareStatement(qry);
             ResultSet rs = connector.sqlQry(stm);
 

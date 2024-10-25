@@ -14,15 +14,17 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import server.RunServer;
-import server.db.layers.BUS.GameMatchBUS;
-import server.db.layers.BUS.PlayerBUS;
-import server.db.layers.DTO.GameMatch;
-import server.db.layers.DTO.Player;
+import server.db.layers.bus.GameMatchBUS;
+import server.db.layers.bus.PlayerBUS;
+import server.db.layers.dto.GameMatch;
+import server.db.layers.dto.Player;
+import server.db.layers.dto.Server;
 import server.game.caro.Caro;
 import shared.constant.Code;
 import shared.constant.StreamData;
 import shared.helper.CustumDateTimeFormatter;
 import shared.helper.Line;
+import shared.helper.ServerHelper;
 import shared.security.AES;
 
 /**
@@ -32,6 +34,7 @@ import shared.security.AES;
 public class Client implements Runnable {
 
     Socket s;
+    Server server;
     DataInputStream dis;
     DataOutputStream dos;
 
@@ -43,7 +46,8 @@ public class Client implements Runnable {
     boolean findingMatch = false;
     String acceptPairMatchStatus = "_"; // yes/no/_
 
-    public Client(Socket s) throws IOException {
+    public Client(Server server, Socket s) throws IOException {
+        this.server = server;
         this.s = s;
 
         // obtaining input and output streams 
@@ -57,7 +61,7 @@ public class Client implements Runnable {
         String received;
         boolean running = true;
 
-        while (!RunServer.isShutDown) {
+        while(server.getStatus().equals("Bật")) {
             try {
                 // receive the request from client
                 received = dis.readUTF();
@@ -175,8 +179,7 @@ public class Client implements Runnable {
             // System.out.println("- Client disconnected: " + s);
 
             // remove from clientManager
-            RunServer.clientManager.remove(this);
-
+            RunServer.getMapClientManager().get(ServerHelper.getKeyServer(server)).remove(this);
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -189,7 +192,7 @@ public class Client implements Runnable {
         String keyEncrypted = received.split(";")[1];
 
         // decrypt key
-        String aesKey = RunServer.serverSide.decrypt(keyEncrypted);
+        String aesKey = RunServer.getServerSide().decrypt(keyEncrypted);
 
         // save AES
         setAes(new AES(aesKey));
@@ -203,9 +206,9 @@ public class Client implements Runnable {
         String[] splitted = received.split(";");
         String username = splitted[1];
         String password = splitted[2];
-
+        System.out.println(username);
         // check đã được đăng nhập ở nơi khác
-        if (RunServer.clientManager.find(username) != null) {
+        if (RunServer.getMapClientManager().get(ServerHelper.getKeyServer(server)).find(username) != null) {
             sendData(StreamData.Type.LOGIN.name() + ";failed;" + Code.ACCOUNT_LOGEDIN);
             return;
         }
@@ -254,7 +257,7 @@ public class Client implements Runnable {
     private void onReceiveListRoom(String received) {
         // prepare data
         String result = "success;";
-        ArrayList<Room> listRoom = RunServer.roomManager.getRooms();
+        ArrayList<Room> listRoom = RunServer.getMapRoomManager().get(ServerHelper.getKeyServer(server)).getRooms();
         int roomCount = listRoom.size();
 
         result += roomCount + ";";
@@ -304,7 +307,7 @@ public class Client implements Runnable {
         }
 
         // kiểm tra xem có ai đang tìm phòng không
-        Client cCompetitor = RunServer.clientManager.findClientFindingMatch();
+        Client cCompetitor =RunServer.getMapClientManager().get(ServerHelper.getKeyServer(server)).findClientFindingMatch();
 
         if (cCompetitor == null) {
             // đặt cờ là đang tìm phòng
@@ -372,7 +375,7 @@ public class Client implements Runnable {
             cCompetitor.sendData(StreamData.Type.RESULT_PAIR_MATCH.name() + ";success");
 
             // create new room
-            Room newRoom = RunServer.roomManager.createRoom();
+            Room newRoom =  RunServer.getMapRoomManager().get(ServerHelper.getKeyServer(server)).createRoom();
 
             // join room
             String thisStatus = this.joinRoom(newRoom, false);
@@ -396,7 +399,7 @@ public class Client implements Runnable {
         String roomId = splitted[1];
 
         // check roomid is valid
-        Room room = RunServer.roomManager.find(roomId);
+        Room room =  RunServer.getMapRoomManager().get(ServerHelper.getKeyServer(server)).find(roomId);
         if (room == null) {
             sendData(StreamData.Type.DATA_ROOM.name() + ";failed;" + Code.ROOM_NOTFOUND + " #" + roomId);
             return;
@@ -430,7 +433,7 @@ public class Client implements Runnable {
 
         // nếu là người chơi thì đóng room luôn
         if (joinedRoom.getClient1().equals(this) || joinedRoom.getClient2().equals(this)) {
-            joinedRoom.close("Người chơi " + this.loginPlayer.getNameId() + " đã thoát phòng.");
+            joinedRoom.close(server, "Người chơi " + this.loginPlayer.getNameId() + " đã thoát phòng.");
             return;
         }
 
@@ -493,7 +496,7 @@ public class Client implements Runnable {
 
             // edit profile
             String result = new PlayerBUS().editProfile(loginPlayer.getUser(), name, avatar, yearOfBirth, gender);
-            
+
             // send result
             sendData(StreamData.Type.EDIT_PROFILE + ";" + result);
 
@@ -535,7 +538,7 @@ public class Client implements Runnable {
                             + Caro.MATCH_TIME_LIMIT
                     );
                 }
-                if(Caro.MATCH_TIME_LIMIT - ((Caro) joinedRoom.getGamelogic()).getMatchTimer().getCurrentTick()<=0){
+                if (Caro.MATCH_TIME_LIMIT - ((Caro) joinedRoom.getGamelogic()).getMatchTimer().getCurrentTick() <= 0) {
                     PlayerBUS bus = new PlayerBUS();
                     Player winner = loginPlayer;
                     Player loser = cCompetitor.loginPlayer;
@@ -557,7 +560,7 @@ public class Client implements Runnable {
                     // broadcast to all client in room windata
                     joinedRoom.broadcast(
                             StreamData.Type.GAME_EVENT + ";"
-                                    + StreamData.Type.MATCH_TIMER_END.name()
+                            + StreamData.Type.MATCH_TIMER_END.name()
                     );
                     break;
                 }
@@ -592,11 +595,11 @@ public class Client implements Runnable {
                         winner.addScore(1);
                         winner.setWinCount(winner.getWinCount() + 1);
                         winner.setMatchCount(winner.getMatchCount() + 1);
-                        winner.setCurrentStreak(Math.max(winner.getWinCount(),winner.getCurrentStreak()));
+                        winner.setCurrentStreak(Math.max(winner.getWinCount(), winner.getCurrentStreak()));
                         loser.addScore(0);
                         loser.setLoseCount(loser.getLoseCount() + 1);
                         loser.setMatchCount(loser.getMatchCount() + 1);
-                        loser.setCurrentStreak(Math.max(loser.getWinCount(),loser.getCurrentStreak()));
+                        loser.setCurrentStreak(Math.max(loser.getWinCount(), loser.getCurrentStreak()));
                         bus.update(winner);
                         bus.update(loser);
 
@@ -672,7 +675,7 @@ public class Client implements Runnable {
 
     // room handlers
     public String joinRoom(String id, boolean isWatcher) {
-        Room found = RunServer.roomManager.find(id);
+        Room found = RunServer.getMapRoomManager().get(ServerHelper.getKeyServer(server)).find(id);
 
         // không tìm thấy phòng cần join ?
         if (found == null) {
