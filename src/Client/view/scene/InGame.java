@@ -11,13 +11,17 @@ import client.model.PlayerInGame;
 import client.view.helper.PlayerInRoomCustomRenderer;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import shared.constant.Avatar;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -56,7 +60,14 @@ public class InGame extends javax.swing.JFrame {
     public InGame() {
         initComponents();
         this.setLocationRelativeTo(null);
-
+         setTitle("Đại Chiến Caro - Game");
+         try {
+            URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLw-jhsZE2DjYrRMcg7lXaRnhiYpjwKkRJ2w&s");
+            Image logo = ImageIO.read(url);
+            setIconImage(logo);
+        } catch (IOException e) {
+            System.out.println("1");
+        }
         // list user
         listPlayersModel = new DefaultListModel<>();
         lListUser.setModel(listPlayersModel);
@@ -95,6 +106,10 @@ public class InGame extends javax.swing.JFrame {
                 }
             }
         });
+           // Thiết lập màu nền cho các thành phần
+        Color backgroundColor = new Color(250,250,250);
+        setBackgroundColor(backgroundColor);
+
     }
 
     public void setPlayerInGame(PlayerInGame p1, PlayerInGame p2) {
@@ -396,13 +411,14 @@ public class InGame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, plToolContainerLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnLeaveRoom)
-                .addContainerGap())
+                .addGap(17, 17, 17))
         );
         plToolContainerLayout.setVerticalGroup(
             plToolContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(plToolContainerLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(btnLeaveRoom)
-                .addGap(0, 26, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         plPlayer.setBorder(javax.swing.BorderFactory.createTitledBorder("Người chơi"));
@@ -774,6 +790,38 @@ public class InGame extends javax.swing.JFrame {
                 new InGame().setVisible(true);
             }
         });
+    }
+  
+
+    private void setBackgroundColor(Color color) {
+        btnLeaveRoom.setBackground(color);
+        btnSendMessage.setBackground(color);
+        jLabel1.setBackground(color);
+        jLabel2.setBackground(color);
+        jLabel4.setBackground(color);
+        jLabel5.setBackground(color);
+        jPanel3.setBackground(color);
+        jPanel4.setBackground(color);
+        jPanel7.setBackground(color);
+        jScrollPane2.setBackground(color);
+        jScrollPane3.setBackground(color);
+        lListUser.setBackground(color);
+        lbActive1.setBackground(color);
+        lbActive2.setBackground(color);
+        lbAvatar1.setBackground(color);
+        lbAvatar2.setBackground(color);
+        lbPlayerNameId1.setBackground(color);
+        lbPlayerNameId2.setBackground(color);
+        lbVersus.setBackground(color);
+        pgbMatchTimer.setBackground(color);
+        pgbTurnTimer.setBackground(color);
+        plBoardContainer.setBackground(color);
+        plPlayer.setBackground(color);
+        plPlayerContainer.setBackground(color);
+        plRightContainer.setBackground(color);
+        plTimer.setBackground(color);
+        plToolContainer.setBackground(color);
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

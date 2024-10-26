@@ -7,9 +7,17 @@ package client.view.scene;
 
 import client.RunClient;
 import client.view.helper.Validation;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Image;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
 import shared.constant.Avatar;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -23,15 +31,82 @@ public class Signup extends javax.swing.JFrame {
     public Signup() {
         initComponents();
         this.setLocationRelativeTo(null);
+        setTitle("Đăng ký");
+        try {
+            URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLw-jhsZE2DjYrRMcg7lXaRnhiYpjwKkRJ2w&s");
+            Image logo = ImageIO.read(url);
+            setIconImage(logo);
+        } catch (IOException e) {
+            System.out.println("1");
+        }
+        getContentPane().setBackground(new java.awt.Color(240, 240, 240));
+        for (Component comp : getContentPane().getComponents()) {
+            comp.setBackground(new java.awt.Color(240, 240, 240));
+            if (comp instanceof JPanel) {
+                for (Component subComp : ((JPanel) comp).getComponents()) {
+                    subComp.setBackground(java.awt.Color.WHITE);
+                }
+            }
+        }
+        setFontForLabels(getContentPane());
+        lbHeaderText.setOpaque(true); // Bật chế độ opaque để màu nền hiển thị
+        lbHeaderText.setBackground(new java.awt.Color(135, 206, 250)); // Màu nền của lbHeaderText
+        lbHeaderText.setFont(new java.awt.Font("Segoe UI", 1, 30)); // Font Segoe UI đậm cỡ 30
+        lbHeaderText.setForeground(new java.awt.Color(240, 240, 240)); // Màu chữ trắng cho lbHeaderText
 
-        // avatar combobox
+        btnSignup.setBackground(new java.awt.Color(135, 206, 250)); // Nền xanh nhạt
+        btnSignup.setForeground(new java.awt.Color(255, 255, 255)); // Chữ trắng
+        btnSignup.setFont(new java.awt.Font("Segoe UI", 1, 20));    // Font đậm cỡ 20
+        btnSignup.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        btnLogin.setBackground(new java.awt.Color(240, 240, 240)); // Nền xám nhạt
+        btnLogin.setForeground(new java.awt.Color(0, 0, 0));      // Chữ đen
+        btnLogin.setFont(new java.awt.Font("Segoe UI", 0, 18));   // Font thường cỡ 18
+        btnSignup.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        // Thay đổi màu của các nút khi di chuột
+        btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnSignup.setBackground(new java.awt.Color(255, 255, 255));
+                btnSignup.setForeground(new java.awt.Color(135, 206, 250)); // Chuyển màu khi di chuột
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnSignup.setBackground(new java.awt.Color(135, 206, 250)); // Màu nền xanh nhạt
+                btnSignup.setForeground(new java.awt.Color(255, 255, 255)); // Chữ trắng
+            }
+        });
+
+        btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnLogin.setBackground(new java.awt.Color(255, 255, 255)); // Nền trắng khi di chuột
+                btnLogin.setForeground(new java.awt.Color(135, 206, 250)); // Chữ xanh nhạt khi di chuột
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnLogin.setBackground(new java.awt.Color(240, 240, 240)); // Nền xám nhạt
+                btnLogin.setForeground(new java.awt.Color(0, 0, 0)); // Chữ đen
+            }
+        });
+
         cbAvatar.setMaximumRowCount(5);
         for (String s : Avatar.LIST) {
             cbAvatar.addItem(new ImageIcon(Avatar.PATH + s));
         }
-
         // default is hidden
         pgbLoading.setVisible(false);
+    }
+
+    private void setFontForLabels(Container container) {
+        for (Component comp : container.getComponents()) {
+            if (comp instanceof JLabel && comp != lbHeaderText) {
+                JLabel label = (JLabel) comp;
+                label.setFont(new java.awt.Font("Segoe UI", 0, 20));
+                label.setForeground(java.awt.Color.BLACK);
+            } else if (comp instanceof JPanel) {
+                // Gọi lại hàm cho các JPanel con
+                setFontForLabels((JPanel) comp);
+            }
+        }
     }
 
     private String getAvatar() {
@@ -86,8 +161,11 @@ public class Signup extends javax.swing.JFrame {
         setTitle("Đăng ký");
         setResizable(false);
 
+        lbHeaderText.setBackground(new java.awt.Color(135, 206, 250));
         lbHeaderText.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
-        lbHeaderText.setText("THAM GIA");
+        lbHeaderText.setForeground(new java.awt.Color(240, 240, 240));
+        lbHeaderText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbHeaderText.setText("ĐĂNG KÝ TÀI KHOẢN");
 
         lbEmail.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_email_48px.png"))); // NOI18N
 
@@ -164,7 +242,7 @@ public class Signup extends javax.swing.JFrame {
                                 .addGroup(plInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
                                     .addComponent(txName))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                         .addGroup(plInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(plInputLayout.createSequentialGroup()
                                 .addComponent(lbPassword)
@@ -255,29 +333,29 @@ public class Signup extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(cbAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbHeaderText)
-                    .addComponent(btnSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLogin)
+                    .addComponent(lbHeaderText, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(plInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pgbLoading, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pgbLoading, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(lbHeaderText)
+                .addContainerGap()
+                .addComponent(lbHeaderText, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(cbAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(plInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addGap(32, 32, 32)
                 .addComponent(pgbLoading, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLogin)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         pack();

@@ -54,7 +54,7 @@ public class MainMenu extends javax.swing.JFrame {
         // default to hidden
         setDisplayState(State.DEFAULT);
         Font buttonFont = new Font("Arial", Font.BOLD, 18); // You can choose the font and size
-        this.setLocation(600, 350);
+        this.setLocation(350, 350);
         JLabel lblTitle = new JLabel("Đại chiến Caro");
         lblTitle.setOpaque(true); // Để có thể thấy màu nền
         lblTitle.setBackground(Color.RED); // Màu nền đỏ

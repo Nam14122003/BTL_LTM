@@ -35,7 +35,7 @@ public class Login extends javax.swing.JFrame {
         getContentPane().setBackground(new java.awt.Color(240, 240, 240)); // Màu nền xám nhạt
         pgbLoading.setVisible(false); // Ẩn thanh tiến trình mặc định
         lbHeaderText.setFont(new java.awt.Font("Segoe UI", 1, 30)); // Font Segoe UI đậm cỡ 30
-        lbHeaderText.setForeground(new java.awt.Color(70, 130, 180)); // Màu xanh dương đậm
+        lbHeaderText.setOpaque(true);
         btnLogin.setBackground(new java.awt.Color(135, 206, 250)); // Nền xanh nhạt
         btnLogin.setForeground(new java.awt.Color(255, 255, 255)); // Chữ trắng
         btnLogin.setFont(new java.awt.Font("Segoe UI", 1, 20));    // Font đậm cỡ 20

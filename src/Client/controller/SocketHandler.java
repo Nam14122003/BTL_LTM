@@ -636,7 +636,7 @@ public class SocketHandler {
     private void onRankingApp(String received) {
         String[] splitted = received.split(";");
         ArrayList<RankingAppData> rankingAppDatas = new ArrayList<>();
-        for (int i = 1; i < splitted.length; i += 6) {
+        for (int i = 1; i < splitted.length; i += 7) {
             RankingAppData rankingAppData = new RankingAppData(splitted[i], splitted[i + 1], Double.parseDouble(splitted[i + 2]), Integer.parseInt(splitted[i + 3]), Integer.parseInt(splitted[i + 4]), Integer.parseInt(splitted[i + 5]), Integer.parseInt(splitted[i + 6]));
             rankingAppDatas.add(rankingAppData);
         }
@@ -677,6 +677,8 @@ public class SocketHandler {
         // Thiết lập cỡ chữ cho bảng
         table.setFont(new Font("Dialog", Font.PLAIN, 16));
         table.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 18));
+        table.getTableHeader().setForeground(Color.WHITE); // Màu chữ trắng cho tiêu đề
+        table.getTableHeader().setReorderingAllowed(false);
         table.setIntercellSpacing(new Dimension(10, 5));
         table.setRowHeight(30); // Chiều cao hàng
         table.setShowGrid(true);

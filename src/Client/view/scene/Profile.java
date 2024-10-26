@@ -8,7 +8,13 @@ package client.view.scene;
 import client.RunClient;
 import client.model.ProfileData;
 import client.view.helper.Validation;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
@@ -30,7 +36,14 @@ public class Profile extends javax.swing.JFrame {
     public Profile() {
         initComponents();
         this.setLocationRelativeTo(null);
-
+        setTitle("Thông tin cá nhân");
+        try {
+            URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLw-jhsZE2DjYrRMcg7lXaRnhiYpjwKkRJ2w&s");
+            Image logo = ImageIO.read(url);
+            setIconImage(logo);
+        } catch (IOException e) {
+            System.out.println("1");
+        }
         // hide cancel/save button in profile
         plProfileBtn.setVisible(false);
 
@@ -53,6 +66,86 @@ public class Profile extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent de) {
             }
         });
+        Color backgroundColor = new Color(240, 240, 240);
+        setBackgroundColor(backgroundColor);
+        Font font = new Font("Dialog", Font.PLAIN, 16);
+        setFontForAllComponents(font);
+    }
+
+    private void setFontForAllComponents(Font font) {
+        btnProfileCancel.setFont(font);
+        btnProfileChangePass.setFont(font);
+        btnProfileSave.setFont(font);
+        cbAvatar.setFont(font);
+        cbGender.setFont(font);
+        jLabel1.setFont(font);
+        jLabel2.setFont(font);
+        jLabel3.setFont(font);
+        jLabel4.setFont(font);
+        jLabel5.setFont(font);
+        jLabel6.setFont(font);
+        jLabel7.setFont(font);
+        jPanel1.setFont(font);
+        jPanel2.setFont(font);
+        jPanel3.setFont(font);
+        jPanel4.setFont(font);
+        jPanel6.setFont(font);
+        jPanel7.setFont(font);
+        lbBirthday.setFont(font);
+        lbCurrentStreak.setFont(font);
+        lbGender.setFont(font);
+        lbLoseCount.setFont(font);
+        lbMatchCount.setFont(font);
+        lbPassword.setFont(font);
+        lbScore.setFont(font);
+        lbTieCount.setFont(font);
+        lbUser.setFont(font);
+        lbUserName.setFont(font);
+        lbWinCount.setFont(font);
+        lbWinRate.setFont(font);
+        pgbProfileLoading.setFont(font);
+        plContainer.setFont(font);
+        plProfileBtn.setFont(font);
+        txName.setFont(font);
+        txYearOfBirth.setFont(font);
+        txtUser.setFont(font);
+    }
+
+    private void setBackgroundColor(Color color) {
+        btnProfileCancel.setBackground(color);
+        btnProfileChangePass.setBackground(color);
+        btnProfileSave.setBackground(color);
+        cbAvatar.setBackground(color);
+        cbGender.setBackground(color);
+        jLabel1.setBackground(color);
+        jLabel2.setBackground(color);
+        jLabel3.setBackground(color);
+        jLabel4.setBackground(color);
+        jLabel5.setBackground(color);
+        jLabel6.setBackground(color);
+        jLabel7.setBackground(color);
+        jPanel1.setBackground(color);
+        jPanel2.setBackground(color);
+        jPanel3.setBackground(color);
+        jPanel4.setBackground(color);
+        jPanel6.setBackground(color);
+        jPanel7.setBackground(color);
+        lbBirthday.setBackground(color);
+        lbCurrentStreak.setBackground(color);
+        lbGender.setBackground(color);
+        lbLoseCount.setBackground(color);
+        lbMatchCount.setBackground(color);
+        lbPassword.setBackground(color);
+        lbScore.setBackground(color);
+        lbTieCount.setBackground(color);
+        lbUser.setBackground(color);
+        lbUserName.setBackground(color);
+        lbWinCount.setBackground(color);
+        lbWinRate.setBackground(color);
+        pgbProfileLoading.setBackground(color);
+        plContainer.setBackground(color);
+        plProfileBtn.setBackground(color);
+
     }
 
     private void setAvatar(String[] avas) {
@@ -579,7 +672,6 @@ public class Profile extends javax.swing.JFrame {
         String gender = cbGender.getSelectedItem().toString();
 
         // TODO validate data
-
         if (!Validation.checkName(name)) {
             JOptionPane.showMessageDialog(this, "Tên là tiếng việt không dấu và"
                     + " không quá 15 ký tự", "Lỗi", JOptionPane.ERROR_MESSAGE);
