@@ -9,19 +9,22 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import server.RunServer;
 import server.db.layers.bus.GameMatchBUS;
 import server.db.layers.bus.PlayerBUS;
+import server.db.layers.dal.GameMatchDAL;
 import server.db.layers.dto.GameMatch;
 import server.db.layers.dto.Player;
 import server.db.layers.dto.Server;
 import server.game.caro.Caro;
 import shared.constant.Code;
 import shared.constant.StreamData;
+import static shared.constant.StreamData.Type.GAME_EVENT;
+import static shared.constant.StreamData.Type.RANKINGAPP;
 import shared.helper.CustumDateTimeFormatter;
 import shared.helper.Line;
 import shared.helper.ServerHelper;
@@ -61,7 +64,7 @@ public class Client implements Runnable {
         String received;
         boolean running = true;
 
-        while(server.getStatus().equals("Bật")) {
+        while (server.getStatus().equals("Bật")) {
             try {
                 // receive the request from client
                 received = dis.readUTF();
@@ -158,8 +161,17 @@ public class Client implements Runnable {
                         onReceiveGameEvent(received);
                         break;
 
+                    case RANKINGAPP:
+                        onRankingApp();
+                        break;
+                        
+                    case LIST_HISTORY:
+                        onListHistory();
+                        break;
+
                     case EXIT:
                         running = false;
+
                 }
 
             } catch (IOException ex) {
@@ -307,7 +319,7 @@ public class Client implements Runnable {
         }
 
         // kiểm tra xem có ai đang tìm phòng không
-        Client cCompetitor =RunServer.getMapClientManager().get(ServerHelper.getKeyServer(server)).findClientFindingMatch();
+        Client cCompetitor = RunServer.getMapClientManager().get(ServerHelper.getKeyServer(server)).findClientFindingMatch();
 
         if (cCompetitor == null) {
             // đặt cờ là đang tìm phòng
@@ -375,7 +387,7 @@ public class Client implements Runnable {
             cCompetitor.sendData(StreamData.Type.RESULT_PAIR_MATCH.name() + ";success");
 
             // create new room
-            Room newRoom =  RunServer.getMapRoomManager().get(ServerHelper.getKeyServer(server)).createRoom();
+            Room newRoom = RunServer.getMapRoomManager().get(ServerHelper.getKeyServer(server)).createRoom();
 
             // join room
             String thisStatus = this.joinRoom(newRoom, false);
@@ -399,7 +411,7 @@ public class Client implements Runnable {
         String roomId = splitted[1];
 
         // check roomid is valid
-        Room room =  RunServer.getMapRoomManager().get(ServerHelper.getKeyServer(server)).find(roomId);
+        Room room = RunServer.getMapRoomManager().get(ServerHelper.getKeyServer(server)).find(roomId);
         if (room == null) {
             sendData(StreamData.Type.DATA_ROOM.name() + ";failed;" + Code.ROOM_NOTFOUND + " #" + roomId);
             return;
@@ -645,6 +657,42 @@ public class Client implements Runnable {
                 );
                 break;
         }
+    }
+
+    public void onRankingApp() {
+        PlayerBUS playerBus = new PlayerBUS();
+        // Kết nối với cơ sở dữ liệu MySQL
+        String result = "";
+        for (Player player : playerBus.getListPlayerSortByScore()) {
+            result += player.getUser() + ";" +player.getName()+";"+  player.getScore() + ";" + player.getMatchCount() + ";" + player.getWinCount() +";" + player.getDrawCount()+";" +player.getLoseCount()+";";
+        }
+        sendData(StreamData.Type.RANKINGAPP.name() + ";" + result);
+    }
+    
+    public void onListHistory(){
+        String result= getListHistory();
+        sendData(StreamData.Type.LIST_HISTORY.name() + ";" + result);
+        
+    }
+    private String getListHistory() {
+        GameMatchDAL gm = new server.db.layers.dal.GameMatchDAL();
+        List<server.db.layers.dto.GameMatch> matchList = gm.readDB();
+        String result = "";
+        PlayerBUS playerBUS = new server.db.layers.bus.PlayerBUS();
+        for (int i = 0; i < matchList.size(); i++) {
+            server.db.layers.dto.GameMatch match = matchList.get(i);
+            int Id1 = match.getPlayerID1();
+            int Id2 = match.getPlayerID2();
+            int winnerId = match.getWinnerID();
+            String winner ="";
+            if (playerBUS.getById(winnerId) == null) {
+                winner = "No winner";
+            } else {
+                winner = playerBUS.getById(winnerId).getName();
+            }
+            result += match.getId() +";" +  playerBUS.getById(Id1).getName()+ ";" + playerBUS.getById(Id2).getName() +";" +winner+";"+match.getStartedTime()+";";
+        }
+        return result;
     }
 
     // send data fucntions

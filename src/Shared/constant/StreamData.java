@@ -69,6 +69,8 @@ public class StreamData {
         // specific
         UNKNOW_TYPE, // khi client gửi type không xác định
         EXIT, // chức năng tắt game / không cần dữ liệu thêm / bradcast thoát game
+        RANKINGAPP,
+        LIST_HISTORY
     }
 
     // https://stackoverflow.com/a/6667365

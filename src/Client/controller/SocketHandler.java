@@ -5,12 +5,16 @@
  */
 package client.controller;
 
-import client.view.scene.RankingApp;
+import Client.model.ListHistory;
+import Client.model.RankingAppData;
 import client.RunClient;
 import client.model.ChatItem;
 import client.model.PlayerInGame;
 import client.model.ProfileData;
 import client.view.scene.MainMenu;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import shared.helper.MyHash;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -23,8 +27,11 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import server.game.caro.History;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import shared.constant.StreamData;
+import static shared.constant.StreamData.Type.GAME_EVENT;
+import static shared.constant.StreamData.Type.RANKINGAPP;
 import shared.security.AES;
 import shared.security.RSA;
 
@@ -183,6 +190,14 @@ public class SocketHandler {
                         onReceiveGameEvent(received);
                         break;
 
+                    case RANKINGAPP:
+                        onRankingApp(received);
+                        break;
+
+                    case LIST_HISTORY:
+                        onGetListHistory(received);
+                        break;
+
                     case EXIT:
                         running = false;
                 }
@@ -235,13 +250,13 @@ public class SocketHandler {
             // lưu user login
             this.loginUser = splitted[2];
 
-
             // chuyển scene
             RunClient.closeScene(RunClient.SceneName.LOGIN);
             RunClient.openScene(RunClient.SceneName.MAINMENU);
 
             // tự động lấy danh sách phòng
-            listRoom();
+            listHistory();
+
         }
     }
 
@@ -473,9 +488,7 @@ public class SocketHandler {
         } else if (status.equals("success")) {
             RunClient.closeScene(RunClient.SceneName.INGAME);
             RunClient.openScene(RunClient.SceneName.MAINMENU);
-
-            // get list room again
-            listRoom();
+            listHistory();
         }
     }
 
@@ -486,7 +499,7 @@ public class SocketHandler {
         // change scene
         RunClient.closeScene(RunClient.SceneName.INGAME);
         RunClient.openScene(RunClient.SceneName.MAINMENU);
-
+        listHistory();
         // show noti
         JOptionPane.showMessageDialog(
                 RunClient.profileScene,
@@ -620,6 +633,58 @@ public class SocketHandler {
         }
     }
 
+    private void onRankingApp(String received) {
+        String[] splitted = received.split(";");
+        ArrayList<RankingAppData> rankingAppDatas = new ArrayList<>();
+        for (int i = 1; i < splitted.length; i += 6) {
+            RankingAppData rankingAppData = new RankingAppData(splitted[i], splitted[i + 1], Double.parseDouble(splitted[i + 2]), Integer.parseInt(splitted[i + 3]), Integer.parseInt(splitted[i + 4]), Integer.parseInt(splitted[i + 5]), Integer.parseInt(splitted[i + 6]));
+            rankingAppDatas.add(rankingAppData);
+        }
+        RunClient.openScene(RunClient.SceneName.RANKINGAPP);
+        RunClient.rankingApp.loadRankingData(rankingAppDatas, loginUser);
+    }
+
+    private void onGetListHistory(String received) {
+        System.out.println(received);
+        String[] splitted = received.split(";");
+        ArrayList<ListHistory> listHistorys = new ArrayList<>();
+        System.out.println(received);
+        for (int i = 1; i < splitted.length; i += 5) {
+            ListHistory listHistory = new ListHistory(Integer.parseInt(splitted[i]), splitted[i + 1], splitted[i + 2], splitted[i + 3], splitted[i + 4]);
+            listHistorys.add(listHistory);
+        }
+        String[] columnNames = {
+            "Match ID", "Player 1", "Player 2", "Winner", "Started Time"
+        };
+        // Tạo bảng và mô hình dữ liệu
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.addColumn("Match ID");
+        tableModel.addColumn("Player 1");
+        tableModel.addColumn("Player 2");
+        tableModel.addColumn("Winner");
+        tableModel.addColumn("Started Time");
+        for (ListHistory listHistory : listHistorys) {
+            Vector<String> row = new Vector<>();
+            row.add(String.valueOf(listHistory.getId()));
+            row.add(listHistory.getNamePlayer1());
+            row.add(listHistory.getNamePlayer2());
+            row.add(listHistory.getNamePlayerWinner());
+            row.add(listHistory.getStartedTime());
+            tableModel.addRow(row);
+        }
+        JTable table = new JTable(tableModel);
+
+        // Thiết lập cỡ chữ cho bảng
+        table.setFont(new Font("Dialog", Font.PLAIN, 16));
+        table.getTableHeader().setFont(new Font("Dialog", Font.BOLD, 18));
+        table.setIntercellSpacing(new Dimension(10, 5));
+        table.setRowHeight(30); // Chiều cao hàng
+        table.setShowGrid(true);
+        table.setGridColor(Color.BLACK);
+
+        RunClient.mainMenuScene.setHistory(table);
+    }
+
     // ============= functions ===============
     // auth
     private void initSecurityAES() {
@@ -675,6 +740,10 @@ public class SocketHandler {
         sendData(StreamData.Type.LIST_ROOM.name());
     }
 
+    public void listHistory() {
+        sendData(StreamData.Type.LIST_HISTORY.name());
+    }
+
     public void watchRoom(String roomId) {
         sendData(StreamData.Type.WATCH_ROOM.name() + ";" + roomId);
     }
@@ -725,7 +794,7 @@ public class SocketHandler {
     public void getProfile(String username) {
         // prepare data
         String data = StreamData.Type.GET_PROFILE.name() + ";" + username;
-        System.out.println("Prepar send data: "+ data);
+        System.out.println("Prepar send data: " + data);
         // send data
         sendData(data);
         System.out.println("Sent data");
@@ -752,6 +821,10 @@ public class SocketHandler {
         sendGameEvent(StreamData.Type.MOVE + ";" + x + ";" + y);
     }
 
+    public void getRankingApp() {
+        sendData(StreamData.Type.RANKINGAPP.name());
+    }
+
     // send data
     public void sendPureData(String data) {
         try {
@@ -769,7 +842,6 @@ public class SocketHandler {
             String encrypted = aes.encrypt(data);
             System.out.println("Encrypted data: " + encrypted);
             dos.writeUTF(encrypted);
-
 
         } catch (IOException ex) {
             Logger.getLogger(SocketHandler.class

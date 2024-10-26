@@ -37,7 +37,7 @@ public class InGame extends javax.swing.JFrame {
     final ImageIcon p2Icon = new ImageIcon(Avatar.ASSET_PATH + "icons8_delete_24px_1.png");
 
     // https://codelearn.io/sharing/lam-game-caro-don-gian-bang-java
-    final int COLUMN = 16, ROW = 16;
+    final int COLUMN = 15, ROW = 15;
 
     DefaultListModel<PlayerInGame> listPlayersModel;
     PlayerInGame player1;

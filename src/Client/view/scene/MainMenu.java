@@ -5,22 +5,17 @@
  */
 package client.view.scene;
 
-import server.db.layers.dto.GameMatchTable;
 import client.RunClient;
 import client.view.helper.LookAndFeel;
-
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
-
-import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.Callable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import shared.helper.CountDownTimer;
-import server.db.layers.dal.GameMatchDAL;
 
 /**
  *
@@ -47,13 +42,13 @@ public class MainMenu extends javax.swing.JFrame {
     public MainMenu() {
         initComponents();
         this.setLocationRelativeTo(null);
-        setTitle("Caro Đại Chiến - Trang Chủ - "+ RunClient.socketHandler.getLoginUser());
-           try {
+        setTitle("Caro Đại Chiến - Trang Chủ - " + RunClient.socketHandler.getLoginUser());
+        try {
             URL url = new URL("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLw-jhsZE2DjYrRMcg7lXaRnhiYpjwKkRJ2w&s");
-            Image logo = ImageIO.read(url);  
-            setIconImage(logo); 
+            Image logo = ImageIO.read(url);
+            setIconImage(logo);
         } catch (IOException e) {
-               System.out.println("1");
+            System.out.println("1");
         }
         this.setSize(1200, 800);
         // default to hidden
@@ -66,7 +61,7 @@ public class MainMenu extends javax.swing.JFrame {
         lblTitle.setForeground(Color.WHITE); // Màu chữ trắng
         lblTitle.setHorizontalAlignment(SwingConstants.CENTER); // Căn giữa
         lblTitle.setFont(new Font("Arial", Font.BOLD, 24)); // Đặt font chữ cho tiêu đề
-       jPanel2.setBackground(new java.awt.Color(240, 240, 240));
+        jPanel2.setBackground(new java.awt.Color(240, 240, 240));
         jPanel1.setBackground(new java.awt.Color(240, 240, 240));
         btnFindMatch.setFont(buttonFont);
         btnFindMatch.setPreferredSize(new Dimension(200, 50)); // Width, Height
@@ -295,8 +290,7 @@ public class MainMenu extends javax.swing.JFrame {
         btnRanking.setText("Bảng xếp hạng");
         btnRanking.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icon_ranking.png")));
         btnRanking.addActionListener(e -> {
-            // Tạo cửa sổ bảng xếp hạng
-            RankingApp rankingApp = new RankingApp(RunClient.socketHandler.getLoginUser());
+            btnGetRankingApp(e);
         });
         javax.swing.GroupLayout plBtnsLayout = new javax.swing.GroupLayout(plBtns);
         plBtns.setLayout(plBtnsLayout);
@@ -436,11 +430,6 @@ public class MainMenu extends javax.swing.JFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/client/view/asset/icons8_contact_24px.png"))); // NOI18N
         jButton1.setText("Xem thông tin");
-
-        GameMatchDAL gm = new server.db.layers.dal.GameMatchDAL();
-        List<server.db.layers.dto.GameMatch> matchList = gm.readDB(); // Lấy danh sách trận đấu từ database
-        GameMatchTable gameMatchTable = new GameMatchTable();
-        gameMatchTable.addGameMatchesToPanel(jPanel3, matchList); // Thêm bảng vào jPanel3
         JLabel lblHistory = new JLabel("Lịch sử");
         lblHistory.setFont(new java.awt.Font("Dialog", java.awt.Font.BOLD, 18)); // Kích thước chữ 18
         lblHistory.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -633,6 +622,23 @@ public class MainMenu extends javax.swing.JFrame {
         RunClient.socketHandler.listRoom();
     }//GEN-LAST:event_btnRefreshListRoomActionPerformed
 
+    private void btnGetRankingApp(java.awt.event.ActionEvent evt) {
+        RunClient.socketHandler.getRankingApp();
+    }
+    public void setHistory(JTable jtable){
+        jPanel3.removeAll();
+        JScrollPane jScrollPane2 = new JScrollPane(jtable);
+        jScrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); // Cung cấp thanh cuộn khi cần
+        jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); // Cung cấp thanh cuộn khi cần
+           
+        // Thiết lập bố cục cho JPanel
+        jPanel3.setLayout(new BoxLayout(jPanel3, BoxLayout.Y_AXIS)); // Bố cục dọc
+        jPanel3.add(jScrollPane2); // Thêm JScrollPane vào JPanel
+        jPanel3.add(Box.createRigidArea(new Dimension(0, 5))); // Khoảng cách
+        jPanel3.revalidate(); // Cập nhật layout
+        jPanel3.repaint(); // Vẽ lại JPanel
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -644,6 +650,7 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
     }
+
     private void setComponentBackgrounds(Component component, Color color) {
         component.setBackground(color);
         if (component instanceof JComponent) {

@@ -13,6 +13,7 @@ import client.view.scene.InGame;
 import client.view.scene.Login;
 import client.view.scene.MainMenu;
 import client.view.scene.Profile;
+import client.view.scene.RankingApp;
 import client.view.scene.Signup;
 
 /**
@@ -28,7 +29,8 @@ public class RunClient {
         MAINMENU,
         CHANGEPASSWORD,
         INGAME,
-        PROFILE
+        PROFILE,
+        RANKINGAPP
     }
 
     // scenes
@@ -39,6 +41,7 @@ public class RunClient {
     public static ChangePassword changePasswordScene;
     public static InGame inGameScene;
     public static Profile profileScene;
+    public static RankingApp rankingApp;
 
     // controller 
     public static SocketHandler socketHandler;
@@ -62,6 +65,7 @@ public class RunClient {
         changePasswordScene = new ChangePassword();
         inGameScene = new InGame();
         profileScene = new Profile();
+        rankingApp = new RankingApp();
     }
 
     public static void openScene(SceneName sceneName) {
@@ -96,6 +100,10 @@ public class RunClient {
                 case PROFILE:
                     profileScene = new Profile();
                     profileScene.setVisible(true);
+                    break;  
+                case RANKINGAPP:
+                    rankingApp = new RankingApp();
+                    rankingApp.setVisible(true);
                     break;
                 default:
                     break;

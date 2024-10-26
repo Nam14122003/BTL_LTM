@@ -17,7 +17,12 @@ import shared.constant.Code;
 public class PlayerBUS {
 
     private ArrayList<Player> listPlayer = new ArrayList<>();
+    private ArrayList<Player> listPlayerSortByScore = new ArrayList<>();
     private PlayerDAL playerDAL = new PlayerDAL();
+
+    public ArrayList<Player> getListPlayerSortByScore() {
+        return listPlayerSortByScore;
+    }
 
     public PlayerBUS() {
         readDB();
@@ -25,6 +30,7 @@ public class PlayerBUS {
 
     public void readDB() {
         listPlayer = playerDAL.readDB();
+        listPlayerSortByScore = playerDAL.getRankingApp();
     }
 
     public boolean add(Player p) {

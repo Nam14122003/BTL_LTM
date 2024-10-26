@@ -25,6 +25,45 @@ public class PlayerDAL {
     public PlayerDAL() {
 
     }
+    
+     public ArrayList getRankingApp(){
+          ArrayList<Player> result = new ArrayList<>();
+         connector = new MysqlConnector();
+
+        try {
+            String qry = "SELECT * FROM player ORDER BY Score DESC";
+            PreparedStatement stm = connector.getConnection().prepareStatement(qry);
+            ResultSet rs = connector.sqlQry(stm);
+
+            if (rs != null) {
+                while (rs.next()) {
+                    Player p = new Player(
+                            rs.getInt("ID"),
+                            rs.getString("Username"),
+                            rs.getString("Password"),
+                            rs.getString("Avatar"),
+                            rs.getString("Name"),
+                            rs.getString("Gender"),
+                            rs.getInt("YearOfBirth"),
+                            rs.getInt("Score"),
+                            rs.getInt("MatchCount"),
+                            rs.getInt("WinCount"),
+                            rs.getInt("LoseCount"),
+                            rs.getInt("CurrentStreak"),
+                            rs.getBoolean("Blocked")
+                    );
+                    result.add(p);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error while trying to read Players info from database!");
+        } finally {
+            connector.closeConnection();
+        }
+
+        return result;
+    }
 
     public ArrayList readDB() {
         ArrayList<Player> result = new ArrayList<>();
