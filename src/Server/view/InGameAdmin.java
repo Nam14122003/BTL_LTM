@@ -141,6 +141,7 @@ public class InGameAdmin extends javax.swing.JFrame {
         if (winUser == null) {
             addChat(new ChatItem("[]", "KẾT QUẢ", "HÒA"));
             JOptionPane.showMessageDialog(this, "Trận đấu kết thúc với tỉ số HÒA.", "HÒA", JOptionPane.INFORMATION_MESSAGE);
+            Admin.joinRoom.leaveRoom();
             return;
         }
         String nameId = "";
@@ -154,7 +155,7 @@ public class InGameAdmin extends javax.swing.JFrame {
 
         // thoát phòng sau khi thua 
         // TODO sau này sẽ cho tạo ván mới, hiện tại cho thoát để tránh lỗi
-        // Admin.joinRoom.leaveRoom();
+         Admin.joinRoom.leaveRoom();
     }
 
     public void startGame(int turnTimeLimit, int matchTimeLimit) {

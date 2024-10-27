@@ -156,6 +156,7 @@ public class InGame extends javax.swing.JFrame {
         if (winUser == null) {
             addChat(new ChatItem("[]", "KẾT QUẢ", "HÒA"));
             JOptionPane.showMessageDialog(this, "Trận đấu kết thúc với tỉ số HÒA.", "HÒA", JOptionPane.INFORMATION_MESSAGE);
+            RunClient.socketHandler.leaveRoom();
             return;
         }
 
@@ -183,6 +184,8 @@ public class InGame extends javax.swing.JFrame {
             addChat(new ChatItem("[]", "KẾT QUẢ", "Người chơi " + nameId + " đã thắng"));
             JOptionPane.showMessageDialog(this, "Người chơi " + nameId + " đã thắng", "Kết quả", JOptionPane.INFORMATION_MESSAGE);
         }
+        
+        RunClient.socketHandler.leaveRoom();
 
         // thoát phòng sau khi thua 
         // TODO sau này sẽ cho tạo ván mới, hiện tại cho thoát để tránh lỗi
