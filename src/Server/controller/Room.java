@@ -14,15 +14,12 @@ import java.util.concurrent.Callable;
 import server.RunServer;
 import server.db.layers.bus.GameMatchBUS;
 import server.db.layers.dto.GameMatch;
+import server.db.layers.dto.Player;
 import server.db.layers.dto.Server;
 import server.game.caro.History;
 import shared.constant.StreamData;
 import shared.helper.ServerHelper;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class Room {
 
     String id;
@@ -53,6 +50,17 @@ public class Room {
                         // end turn callback
                         (Callable) () -> {
                             // TURN_TIMER_END;<winner-usernam>
+                            // tinh diem hoa
+                            server.db.layers.bus.PlayerBUS bus = new server.db.layers.bus.PlayerBUS();
+                            String userWin = gamelogic.getLastMoveUser();
+                            server.db.layers.dto.Player user1 = client1.getLoginPlayer();
+                            server.db.layers.dto.Player user2 = client2.getLoginPlayer();
+                            if (user1.getUser().equals(userWin)) {
+                                updateDB(user1,user2,bus);
+                            }
+                            else{
+                                updateDB(user2,user1,bus);
+                            }
                             broadcast(
                                     StreamData.Type.GAME_EVENT + ";"
                                     + StreamData.Type.TURN_TIMER_END.name() + ";"
@@ -116,6 +124,25 @@ public class Room {
                         // tick interval
                         Caro.MATCH_TIME_LIMIT / 10
                 );
+    }
+
+    private void updateDB(Player winner, Player loser, server.db.layers.bus.PlayerBUS bus) {
+        winner.addScore(1);
+        winner.setMatchCount(winner.getMatchCount() + 1);
+        loser.setMatchCount(loser.getMatchCount() + 1);
+        winner.setWinCount(winner.getWinCount() + 1);
+        loser.setLoseCount(loser.getLoseCount() + 1);
+        bus.update(winner);
+        bus.update(loser);
+        new GameMatchBUS().add(new GameMatch(
+                client1.getLoginPlayer().getId(),
+                client2.getLoginPlayer().getId(),
+                winner.getId(),
+                gamelogic.getMatchTimer().getCurrentTick(),
+                gamelogic.getHistory().size(),
+                startedTime
+        ));
+        gamelogic.getTurnTimer().cancel();
     }
 
     // add/remove client

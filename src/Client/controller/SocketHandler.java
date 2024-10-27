@@ -35,10 +35,7 @@ import static shared.constant.StreamData.Type.RANKINGAPP;
 import shared.security.AES;
 import shared.security.RSA;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+
 public class SocketHandler {
 
     Socket s;

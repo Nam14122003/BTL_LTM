@@ -11,10 +11,6 @@ import java.util.regex.Pattern;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class Validation {
 
     public static boolean checkPassword(String pass) {

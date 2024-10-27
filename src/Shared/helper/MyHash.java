@@ -17,10 +17,6 @@ import java.util.logging.Logger;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class MyHash {
 
     // https://www.baeldung.com/java-password-hashing#2-implementing-pbkdf2-in-java

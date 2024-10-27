@@ -7,10 +7,6 @@ package client.model;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class CurrentGame {
 
     private ArrayList<ProfileData> listViewer;

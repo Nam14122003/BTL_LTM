@@ -7,10 +7,7 @@ package server.controller;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
+
 public class ClientManager {
 
     ArrayList<Client> clients;

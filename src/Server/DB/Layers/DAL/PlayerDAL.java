@@ -48,6 +48,7 @@ public class PlayerDAL {
                             rs.getDouble("Score"),
                             rs.getInt("MatchCount"),
                             rs.getInt("WinCount"),
+                            rs.getInt("DrawCount"),
                             rs.getInt("LoseCount"),
                             rs.getInt("CurrentStreak"),
                             rs.getBoolean("Blocked")
@@ -87,6 +88,7 @@ public class PlayerDAL {
                             rs.getDouble("Score"),
                             rs.getInt("MatchCount"),
                             rs.getInt("WinCount"),
+                             rs.getInt("DrawCount"),
                             rs.getInt("LoseCount"),
                             rs.getInt("CurrentStreak"),
                             rs.getBoolean("Blocked")

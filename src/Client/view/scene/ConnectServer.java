@@ -15,10 +15,6 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class ConnectServer extends javax.swing.JFrame {
 
     public ConnectServer() {

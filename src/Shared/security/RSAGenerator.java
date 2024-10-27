@@ -14,11 +14,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
-// https://stackjava.com/demo/code-java-vi-du-ma-hoa-giai-ma-voi-rsa.html
+
 public class RSAGenerator {
 
     public static final String PUBLIC_KEY_FILE = "rsa_keypair/publicKey";

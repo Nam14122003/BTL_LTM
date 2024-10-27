@@ -7,10 +7,6 @@ package server.game.caro;
 
 import java.util.concurrent.Callable;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class TestTimerCaro {
 
     public TestTimerCaro() {

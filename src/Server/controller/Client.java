@@ -30,10 +30,6 @@ import shared.helper.Line;
 import shared.helper.ServerHelper;
 import shared.security.AES;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class Client implements Runnable {
 
     Socket s;

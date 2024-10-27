@@ -12,11 +12,6 @@ import java.util.UUID;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
-// https://teamvietdev.com/ma-hoa-va-giai-ma-aes-trong-java/
 public class AES {
 
     String secretKey;

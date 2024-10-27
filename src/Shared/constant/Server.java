@@ -4,10 +4,6 @@
  */
 package shared.constant;
 
-/**
- *
- * @author Admin
- */
 public class Server {
     public static String SERVER_TRAI_DAT = "127.0.0.1";
     public static String SERVER_SAO_HOA = "26.30.30.53";

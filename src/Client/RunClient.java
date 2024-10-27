@@ -16,10 +16,6 @@ import client.view.scene.Profile;
 import client.view.scene.RankingApp;
 import client.view.scene.Signup;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class RunClient {
 
     public enum SceneName {

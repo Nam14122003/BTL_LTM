@@ -8,10 +8,6 @@ package server.controller;
 import java.util.ArrayList;
 import shared.helper.RandomString;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class RoomManager {
 
     ArrayList<Room> rooms;

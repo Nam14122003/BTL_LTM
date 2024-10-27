@@ -5,10 +5,6 @@
  */
 package server.game.caro;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class History {
 
     int row;

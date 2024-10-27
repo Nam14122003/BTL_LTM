@@ -5,10 +5,6 @@
  */
 package shared.helper;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class Point {
 
     public int x, y;

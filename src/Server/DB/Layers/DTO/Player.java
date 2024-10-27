@@ -36,7 +36,7 @@ public class Player {
     }
 
 
-    public Player(int id, String username, String password, String avatar, String name, String gender, int yearOfBirth, double score, int matchCount, int winCount, int loseCount, int currentStreak, boolean blocked) {
+    public Player(int id, String username, String password, String avatar, String name, String gender, int yearOfBirth, double score, int matchCount, int winCount,int drawCount,  int loseCount, int currentStreak, boolean blocked) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -47,6 +47,7 @@ public class Player {
         this.score = score;
         this.matchCount = matchCount;
         this.winCount = winCount;
+        this.drawCount = drawCount;
         this.loseCount = loseCount;
         this.currentStreak = currentStreak;
         this.blocked = blocked;

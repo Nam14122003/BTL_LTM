@@ -11,10 +11,6 @@ import java.awt.Container;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class LookAndFeel {
 
     // https://stackoverflow.com/a/10986504

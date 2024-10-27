@@ -5,10 +5,6 @@
  */
 package client.model;
 
-/**
- *
- * @author Hoang Tran < hoang at 99.hoangtran@gmail.com >
- */
 public class ChatItem {
 
     private String time;
